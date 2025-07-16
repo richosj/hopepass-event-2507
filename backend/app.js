@@ -8,9 +8,12 @@ const adminRoutes = require('./routes/admin');
 dotenv.config();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+
+app.get('/', (req, res) => res.send('서버 정상 작동 중'));
 
 app.use('/api', apiRoutes);
 app.use('/admin', adminRoutes);
