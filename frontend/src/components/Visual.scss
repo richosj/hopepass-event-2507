@@ -1,0 +1,14 @@
+.visual {
+    height: 100vh;
+    background: url('../assets/visual/bg.png') no-repeat center center / cover;
+    .visual__inner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .visual__title {
+            font-size: 40px;
+            color: #fff;
+        }
+    }
+}

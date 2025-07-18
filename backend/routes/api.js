@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-// POST /api/verify
+// 응모권 호출
 router.post('/verify', async (req, res) => {
   console.log('verify', req.body);
   const { code } = req.body;
@@ -16,8 +16,10 @@ router.post('/verify', async (req, res) => {
   res.json({ valid: true, prize: row.prize_type });
 });
 
-// POST /api/use
-router.post('/use', async (req, res) => {
+
+
+// 사용 된 응모권 처리
+router.post('/mark-used', async (req, res) => {
   const { code } = req.body;
   await db.query('UPDATE event_codes SET is_used = true, used_at = NOW() WHERE code = $1', [code]);
   res.json({ success: true });

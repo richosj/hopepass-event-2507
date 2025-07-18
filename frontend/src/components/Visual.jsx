@@ -6,7 +6,7 @@ const Visual = () => {
     <div className="visual">
       <div className="visual__inner">
         <div className="visual__title">
-          <h2>희망패스</h2>
+          
         </div>
       </div>
     </div>
