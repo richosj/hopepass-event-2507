@@ -1,28 +1,97 @@
-const express = require('express');
-const router = express.Router();
-const db = require('../models/db');
+const express = require('express')
+const router = express.Router()
+const db = require('../models/db')
 
-// 응모권 호출
-router.post('/verify', async (req, res) => {
-  console.log('verify', req.body);
-  const { code } = req.body;
+// 룰렛 확률
+const baseProb = { 1: 0.1, 2: 2, 3: 5, 4: 10, 5: 82.9 }
+const limits = { 1: 1, 2: 2, 3: 5, 4: 20 }
 
-  const result = await db.query('SELECT * FROM event_codes WHERE code = $1', [code]);
-  const row = result.rows[0];
+router.post('/spin', async (req, res) => {
+  const { code } = req.body
+  const client = await db.connect()
 
-  if (!row) return res.status(404).json({ valid: false });
-  if (row.is_used) return res.status(400).json({ valid: true, used: true });
+  try {
+    await client.query('BEGIN')
 
-  res.json({ valid: true, prize: row.prize_type });
-});
+    const result = await client.query(
+      'SELECT * FROM event_codes WHERE code = $1 FOR UPDATE',
+      [code]
+    )
+    const row = result.rows[0]
 
+    if (!row) {
+      await client.query('ROLLBACK')
+      return res.status(404).json({ message: 'invalid code' })
+    }
 
+    if (row.is_used) {
+      await client.query('ROLLBACK')
+      return res.status(400).json({ message: 'already used' })
+    }
 
-// 사용 된 응모권 처리
-router.post('/mark-used', async (req, res) => {
-  const { code } = req.body;
-  await db.query('UPDATE event_codes SET is_used = true, used_at = NOW() WHERE code = $1', [code]);
-  res.json({ success: true });
-});
+    // 등수별 사용 수
+    const countResult = await client.query(`
+      SELECT prize_type, COUNT(*) as count
+      FROM event_codes
+      WHERE is_used = true
+      GROUP BY prize_type
+    `)
+    const usedCounts = { 1: 0, 2: 0, 3: 0, 4: 0 }
+    countResult.rows.forEach(r => {
+      const rank = parseInt(r.prize_type, 10)
+      if (rank >= 1 && rank <= 4) {
+        usedCounts[rank] = parseInt(r.count, 10)
+      }
+    })
 
-module.exports = router;
+    // 확률 계산
+    let total = 0
+    let redistribute = 0
+    const probs = {}
+
+    for (let rank = 1; rank <= 4; rank++) {
+      if (usedCounts[rank] >= limits[rank]) {
+        probs[rank] = 0
+        redistribute += baseProb[rank]
+      } else {
+        probs[rank] = baseProb[rank]
+        total += baseProb[rank]
+      }
+    }
+
+    probs[5] = baseProb[5] + redistribute
+    total += probs[5]
+
+    // 룰렛 결과
+    const rand = Math.random() * total
+    let cum = 0
+    let chosenRank = 5
+
+    for (let rank = 1; rank <= 5; rank++) {
+      cum += probs[rank]
+      if (rand <= cum) {
+        chosenRank = rank
+        break
+      }
+    }
+
+    // 응모권 사용 처리 + 당첨 등수 기록
+    await client.query(
+      `UPDATE event_codes
+       SET is_used = true, used_at = NOW(), prize_type = $1
+       WHERE code = $2`,
+      [chosenRank, code]
+    )
+
+    await client.query('COMMIT')
+    res.json({ success: true, rank: chosenRank })
+  } catch (err) {
+    await client.query('ROLLBACK')
+    console.error(err)
+    res.status(500).json({ message: 'internal error' })
+  } finally {
+    client.release()
+  }
+})
+
+module.exports = router

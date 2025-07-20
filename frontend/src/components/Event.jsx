@@ -1,52 +1,18 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './Event.scss'
 
 const Event = () => {
   const [ticket, setTicket] = useState('')
-  const [valid, setValid] = useState(null)      // true | false
+  const [valid, setValid] = useState(null)
   const [usedBefore, setUsedBefore] = useState(false)
   const [usedAfter, setUsedAfter] = useState(false)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [counts, setCounts] = useState({1:0,2:0,3:0,4:0,5:0});
+  const [prizeRank, setPrizeRank] = useState(null)
+  const [rotDeg, setRotDeg] = useState(0)
 
-  const spinWheel = (counts) => {
-    return new Promise(resolve => {
-      
-      const baseProb = { 1: 0.1, 2: 2, 3: 5, 4: 10, 5: 82.9 }
-      const limits   = { 1: 1, 2: 2, 3: 5, 4: 20 }
-      let redistribute = 0
-      let total = 0
-      const probs = {}
-
-      for (let rank = 1; rank <= 4; rank++) {
-        if ((counts[rank] || 0) >= limits[rank]) {
-          probs[rank] = 0
-          redistribute += baseProb[rank]
-        } else {
-          probs[rank] = baseProb[rank]
-          total += baseProb[rank]
-        }
-      }
-
-      probs[5] = baseProb[5] + redistribute
-      total += probs[5]
-
-      const rand = Math.random() * total
-      let cum = 0
-      for (let rank = 1; rank <= 5; rank++) {
-        cum += probs[rank]
-        if (rand <= cum) {
-          resolve(rank)
-          console.log(rank)
-          return
-        }
-      }
-      resolve(5)
-    })
-  }
-
+  const wheelRef = useRef(null)
 
   const handleTicket = async () => {
     setLoading(true)
@@ -54,25 +20,23 @@ const Event = () => {
     setValid(null)
     setUsedBefore(false)
     setUsedAfter(false)
+    setPrizeRank(null)
 
     try {
-      const { data: { valid, used } } = await axios.post(
-        'http://localhost:3000/api/verify',
-        { code: ticket }
-      )
-      setValid(valid)
-      setUsedBefore(used)
-      if (!valid || used) return
+      const { data } = await axios.post('http://localhost:3000/api/spin', { code: ticket })
+      const rank = data.rank
 
-      // 룰렛 스핀
-      await spinWheel()
-      // 사용 처리
-      await axios.post('http://localhost:3000/api/mark-used', { code: ticket })
+      setValid(true)
       setUsedAfter(true)
+      setPrizeRank(rank)
+
+      spinToRank(rank)
     } catch (err) {
       if (err.response?.status === 404) {
-        // 404 → 유효하지 않은 번호
         setValid(false)
+      } else if (err.response?.data?.message === 'already used') {
+        setValid(true)
+        setUsedBefore(true)
       } else {
         setError(err.response?.data?.message || err.message)
       }
@@ -80,6 +44,15 @@ const Event = () => {
       setLoading(false)
     }
   }
+
+  const spinToRank = (rank) => {
+    const baseDegPerSegment = 360 / 5
+    const segmentIndex = rank - 1
+    const targetDeg = 360 * 5 + (360 - segmentIndex * baseDegPerSegment)  // 5바퀴 돌고 해당 등수 위치에 멈춤
+
+    setRotDeg(targetDeg)
+  }
+
   return (
     <div className="event">
       <input
@@ -89,16 +62,32 @@ const Event = () => {
         placeholder="응모권 번호 12자리를 입력해주세요."
       />
       <button onClick={handleTicket} disabled={loading}>
-        {loading ? '검증 중…' : '룰렛 돌리기'}
+        {loading ? '검증 중…' : '룰렛 돌리는 중…'}
       </button>
 
-      <button onClick={spinWheel}>룰렛 돌리기</button>
-      
+      <div className="pointer"></div>
+      <div
+        className="wheel"
+        ref={wheelRef}
+        style={{ transform: `rotate(${rotDeg}deg)` }}
+      >
+        {[1, 2, 3, 4, 5].map((rank, i) => {
+          const rotate = (i * 72)  // 360/5
+          return (
+            <div
+              key={rank}
+              className="segment"
+              style={{ transform: `rotate(${rotate}deg)` }}
+            >
+              {rank}
+            </div>
+          )
+        })}
+      </div>
 
       {valid === false && <p className="error">유효하지 않은 번호야</p>}
       {valid && usedBefore && <p className="error">이미 사용된 번호야</p>}
-      {valid && !usedBefore && loading && <p className="success">룰렛 돌리는 중…</p>}
-      {usedAfter && <p className="success">룰렛 완료! 코드 사용 처리했어.</p>}
+      {usedAfter && <p className="success">🎉 {prizeRank}등 당첨! 코드 사용 처리 완료!</p>}
       {error && <p className="error">에러: {error}</p>}
     </div>
   )
