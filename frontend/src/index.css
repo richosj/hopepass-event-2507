@@ -11,6 +11,9 @@
   --font-weight-700: "Freesentation 7 Bold";
   --font-weight-800: "Freesentation 8 ExtraBold";
   --font-weight-900: "Freesentation 9 Black";
+
+  --max-width: 120rem;
+  --gap: 2rem;
 }
 html,
 body{

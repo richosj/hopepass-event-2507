@@ -1,0 +1,38 @@
+.luck{
+    height: 3364px;
+    background: url('../assets/lucky/bg.png') no-repeat center center;
+    &__title{
+        padding-top: 24.5rem;
+        text-align: center;
+        span{
+            vertical-align: top;
+            position: relative;
+            display: inline-block;
+            &::after{
+                content: '';
+                display: inline-block;
+                position: absolute;
+                width: 32rem;
+                height: 7.1rem;
+                background: url('../assets/lucky/shiny.png') no-repeat center center;
+                left: -14rem;
+                top: 4rem;
+            }
+        }
+    }
+}
+
+.luck__step{
+    text-align: center;
+    padding-top: 5.5rem;
+    &-text{
+        padding-top: 5rem;
+        p{
+            line-height: 1.4;
+            color: #fff;
+            opacity: .55;
+            font-size: 2rem;
+            font-family: var(--font-weight-500);
+        }
+    }
+}
