@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import './Visual.scss';
 
 const Visual = () => {
   return (
     <div className="visual">
+      <Link to="/admin/dashboard">관리자 페이지</Link>
       <div className="visual__inner">
         <div className="visual__container">
           <div className='icon-01 icon-position'><i aria-label="닌텐도 이모티콘"><img src="/src/assets/visual/emoticon-1.png" alt="" /></i></div>
