@@ -9,19 +9,46 @@ const Event = () => {
   const [usedAfter, setUsedAfter] = useState(false)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [counts, setCounts] = useState({1:0,2:0,3:0,4:0,5:0});
 
-  const spinWheel = () =>
-    new Promise(resolve => {
-      console.log('spinWheel')
-      // 룰렛 애니메이션 끝나면 resolve()
-      resolve()
+  const spinWheel = (counts) => {
+    return new Promise(resolve => {
+      
+      const baseProb = { 1: 0.1, 2: 2, 3: 5, 4: 10, 5: 82.9 }
+      const limits   = { 1: 1, 2: 2, 3: 5, 4: 20 }
+      let redistribute = 0
+      let total = 0
+      const probs = {}
+
+      for (let rank = 1; rank <= 4; rank++) {
+        if ((counts[rank] || 0) >= limits[rank]) {
+          probs[rank] = 0
+          redistribute += baseProb[rank]
+        } else {
+          probs[rank] = baseProb[rank]
+          total += baseProb[rank]
+        }
+      }
+
+      probs[5] = baseProb[5] + redistribute
+      total += probs[5]
+
+      const rand = Math.random() * total
+      let cum = 0
+      for (let rank = 1; rank <= 5; rank++) {
+        cum += probs[rank]
+        if (rand <= cum) {
+          resolve(rank)
+          console.log(rank)
+          return
+        }
+      }
+      resolve(5)
     })
+  }
+
 
   const handleTicket = async () => {
-    // if (ticket.length !== 12) {
-    //   setValid(false)
-    //   return
-    // }
     setLoading(true)
     setError(null)
     setValid(null)
@@ -53,7 +80,6 @@ const Event = () => {
       setLoading(false)
     }
   }
-
   return (
     <div className="event">
       <input
@@ -65,6 +91,9 @@ const Event = () => {
       <button onClick={handleTicket} disabled={loading}>
         {loading ? '검증 중…' : '룰렛 돌리기'}
       </button>
+
+      <button onClick={spinWheel}>룰렛 돌리기</button>
+      
 
       {valid === false && <p className="error">유효하지 않은 번호야</p>}
       {valid && usedBefore && <p className="error">이미 사용된 번호야</p>}
