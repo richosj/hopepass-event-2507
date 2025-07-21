@@ -26,7 +26,7 @@ router.get('/dashboard', auth, (req, res) => {
 
 // 관리자 코드 목록 API (React에서 호출)
 router.get('/codes', auth, async (req, res) => {
-  const { code, used, rank, page = 1, limit = 20 } = req.query;
+  const { code, used, rank, page = 1, limit = 15 } = req.query;
   const offset = (page - 1) * limit;
 
   const conditions = [];
