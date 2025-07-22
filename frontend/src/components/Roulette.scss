@@ -1,0 +1,64 @@
+.roulette{
+  background: #1c1c1c url(../assets/roulette/bg.png) no-repeat center center;
+  height: 1968px;
+  &-inner{
+    width: 1200px;
+    margin: 0 auto;
+  }
+  .roulette-title{
+    text-align: center;
+    padding-top: 14.5rem;
+  }
+  &-input{
+    display: flex;
+    width: 846px;
+    height: 150px;
+    border: 3px solid var(--color-primary);
+    padding: 2rem;
+    margin: 0 auto;
+    margin-top: 6rem;
+    input{
+      flex: 1;
+      font-family: var(--font-weight-600);
+      font-weight: 600;
+      color: #111;
+      font-size: 3.4rem;
+      background-color: #e6e6e6;
+      padding-left: 3.5rem;
+      &::placeholder{
+        color: #b3b3b3;
+      }
+    }
+    button{
+      width: 246px;
+      background: linear-gradient(90deg, #56f83e, #22cb09);
+      font-weight: 700;
+      font-family: var(--font-weight-700);
+      font-size: 3.4rem;
+      color: #111;
+    }
+  }
+}
+
+
+.wheel {
+    position: relative;
+    width: 870px;
+    height: 860px;
+    background: url(../assets/roulette/wheel.png) no-repeat center center;
+    transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  
+.wheel .segment {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 0;
+  left: 50%;
+  transform-origin: 0% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+}

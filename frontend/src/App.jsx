@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Event from './components/Event';
 import Footer from './components/Footer';
 import LuckGrab from './components/LuckGrab';
 import PrizeList from './components/PrizeList';
+import Roulette from './components/Roulette';
 import Visual from './components/Visual';
 import AdminDashboard from './pages/AdminDashboard'; // 관리자 페이지
 
@@ -19,7 +19,7 @@ function App() {
             <Visual />
             <LuckGrab />
             <PrizeList />
-            <Event />
+            <Roulette />
             <Footer />
           </div>
         } />

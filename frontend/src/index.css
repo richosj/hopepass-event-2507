@@ -2,18 +2,20 @@
 
 /* 글로벌 기본 스타일 */
 :root {
-  --font-weight-100: "Freesentation 1 Thin";
-  --font-weight-200: "Freesentation 2 ExtraLight";
-  --font-weight-300: "Freesentation 3 Light";
-  --font-weight-400: "Freesentation 4 Regular";
-  --font-weight-500: "Freesentation 5 Medium";
-  --font-weight-600: "Freesentation 6 SemiBold";
-  --font-weight-700: "Freesentation 7 Bold";
-  --font-weight-800: "Freesentation 8 ExtraBold";
-  --font-weight-900: "Freesentation 9 Black";
+  --font-weight-100: "Freesentation 1";
+  --font-weight-200: "Freesentation 2";
+  --font-weight-300: "Freesentation 3";
+  --font-weight-400: "Freesentation 4";
+  --font-weight-500: "Freesentation 5";
+  --font-weight-600: "Freesentation 6";
+  --font-weight-700: "Freesentation 7";
+  --font-weight-800: "Freesentation 8";
+  --font-weight-900: "Freesentation 9";
 
   --max-width: 120rem;
   --gap: 2rem;
+
+  --color-primary: #01ff56;
 }
 html,
 body{
@@ -26,4 +28,5 @@ body {
   font-family: var(--font-weight-400);
   color: #333;
   line-height: 1;
+  letter-spacing: -0.043em;
 }

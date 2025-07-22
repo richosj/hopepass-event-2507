@@ -1,0 +1,58 @@
+img{vertical-align: top;}
+.prize{
+    background:#111111 url(../assets/prize/bg.png) no-repeat center center;
+    height: 1155px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &-list{
+        width: 884px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 4.5rem 0;
+    }
+}
+.prize-title{
+    text-align: center;
+}
+.prize__list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 25px;
+    padding-top: 50px;
+}
+.item-large {
+    flex: 1;
+    .item{
+        bottom: 75px;
+    }
+}
+.prize-item{
+    position: relative;
+    .item{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) scale(1);
+        transition: transform 0.3s ease-in-out;
+        &:hover{
+            transform: translateX(-50%) scale(1.1);
+        }
+    }
+}
+
+.prize-item-02,
+.prize-item-03{
+    .item{bottom: 2rem;}
+}
+.prize-item-04{
+    .item{bottom: 1.2rem;}
+}
+.prize-item-05{
+    .item{bottom: 3rem;}
+}
+.prize-item-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 50px 25px;
+  }

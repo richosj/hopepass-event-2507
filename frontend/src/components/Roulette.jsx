@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useRef, useState } from 'react'
-import './Event.scss'
+import './Roulette.scss'
 
-const Event = () => {
+const Roulette = () => {
   const [ticket, setTicket] = useState('')
   const [valid, setValid] = useState(null)
   const [usedBefore, setUsedBefore] = useState(false)
@@ -54,35 +54,31 @@ const Event = () => {
   }
 
   return (
-    <div className="event">
-      <input
-        value={ticket}
-        onChange={e => setTicket(e.target.value)}
-        maxLength={12}
-        placeholder="응모권 번호 12자리를 입력해주세요."
-      />
-      <button onClick={handleTicket} disabled={loading}>
-        {loading ? '검증 중…' : '룰렛 돌리는 중…'}
-      </button>
+    <div className="roulette">
+      <div className="roulette-inner">
+        <div className="roulette-title">
+          <h2><img src="/src/assets/roulette/roulette-title.png" alt="" /></h2>
+        </div>
+        <div className="roulette-input">
+          <input
+            value={ticket}
+            onChange={e => setTicket(e.target.value)}
+            maxLength={12}
+            placeholder="응모권 번호 12자리를 입력해주세요." 
+          />
+          <button onClick={handleTicket} disabled={loading}>
+            룰렛 돌리기
+          </button>
+        </div>
 
-      <div className="pointer"></div>
-      <div
-        className="wheel"
-        ref={wheelRef}
-        style={{ transform: `rotate(${rotDeg}deg)` }}
-      >
-        {[1, 2, 3, 4, 5].map((rank, i) => {
-          const rotate = (i * 72)  // 360/5
-          return (
-            <div
-              key={rank}
-              className="segment"
-              style={{ transform: `rotate(${rotate}deg)` }}
-            >
-              {rank}
-            </div>
-          )
-        })}
+        <div className="pointer"></div>
+        <div
+          className="wheel"
+          ref={wheelRef}
+          style={{ transform: `rotate(${rotDeg}deg)` }}
+        >
+         
+        </div>
       </div>
 
       {valid === false && <p className="error">유효하지 않은 번호야</p>}
@@ -93,4 +89,4 @@ const Event = () => {
   )
 }
 
-export default Event
+export default Roulette
