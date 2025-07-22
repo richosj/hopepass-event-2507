@@ -19,14 +19,16 @@ router.post('/spin', async (req, res) => {
     )
     const row = result.rows[0]
 
+    // ✅ 코드 없음 → 404 ❌ → 200으로 보내기
     if (!row) {
       await client.query('ROLLBACK')
-      return res.status(404).json({ message: 'invalid code' })
+      return res.json({ success: false, reason: 'invalid' })  // 🔥 여기 고침
     }
 
+    // ✅ 이미 사용됨 → 400 ❌ → 200으로 보내기
     if (row.is_used) {
       await client.query('ROLLBACK')
-      return res.status(400).json({ message: 'already used' })
+      return res.json({ success: false, reason: 'used' })  // 🔥 여기 고침
     }
 
     // 등수별 사용 수

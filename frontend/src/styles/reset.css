@@ -48,7 +48,10 @@ table {
 
 img{
   display: inline-block;
-  max-width: 100%;
+  vertical-align: top;
+  @media (max-width: 1000px) {
+    max-width: 100%;
+  }
 }
 
 button{
@@ -62,4 +65,12 @@ a{
 input{
   background: transparent;
   border: 0;
+}
+/* global 또는 Roulette.scss 등 공통에 추가 */
+#smoother-wrapper {
+  height: 100%;
+  overflow: hidden;
+}
+#smoother-content {
+  will-change: transform;
 }

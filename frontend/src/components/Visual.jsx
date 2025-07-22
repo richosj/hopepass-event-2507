@@ -1,18 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import './Visual.scss';
 
 const Visual = () => {
   return (
     <div className="visual">
-      <Link to="/admin/dashboard">관리자 페이지</Link>
+      {/* <Link to="/admin/dashboard">관리자 페이지</Link> */}
       <div className="visual__inner">
         <div className="visual__container">
-          <div className='icon-01 icon-position'><i aria-label="닌텐도 이모티콘"><img src="/src/assets/visual/emoticon-1.png" alt="" /></i></div>
-          <div className='icon-02 icon-position'><i aria-label="편지 이모티콘"><img src="/src/assets/visual/emoticon-2.png" alt="" /></i></div>
+          <div className='icon-01 icon-position'>
+            <img className='pc' src="/src/assets/visual/emoticon-1.png" alt="" />
+            <img className='mobile' src="/src/assets/visual/emoticon-mobile-1.png" alt="" />
+          </div>
+          <div className='icon-02 icon-position'>
+            <img className='pc' src="/src/assets/visual/emoticon-2.png" alt="" />
+            <img className='mobile' src="/src/assets/visual/emoticon-mobile-2.png" alt="" />
+          </div>
           <div className="visual__title">
-            <span className="off"><img src="/src/assets/visual/title-off.png" alt="" /></span>
+            <div className="pc">
+              <span className="off"><img src="/src/assets/visual/title-off.png" alt="" /></span>
+            </div>
+            <div className="mobile">
+              <span className="off"><img src="/src/assets/visual/title-mobile.png" alt="" /></span>
+            </div>
           </div>
           <div className="visual__info">
             <dl>

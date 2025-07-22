@@ -1,13 +1,69 @@
 .roulette{
   background: #1c1c1c url(../assets/roulette/bg.png) no-repeat center center;
   height: 1968px;
+  @media (max-width: 1000px) {
+    height: auto;
+    background: url(../assets/roulette/bg-mobile.png) no-repeat center top / 100% auto;
+  }
   &-inner{
-    width: 1200px;
+    width: 1180px;
     margin: 0 auto;
+    position: relative;
+    height: 100%;
+    @media (max-width: 1000px) {
+      width: 100%;
+      height: auto;
+    }
+    .deco{
+      position: absolute;
+    }
+    .deco-1{
+      top: 266px;
+      left: -208px;
+      @media (max-width: 1000px) {display: none;}
+    }
+    .deco-2{
+      top:363px;
+      right: -175px;
+      @media (max-width: 1000px) {display: none;}
+    }
+    .deco-3{
+      top: 800px;
+      right: -40px;
+      img{
+        animation: updown 3s infinite ease-in-out alternate;
+      }
+      @media (max-width: 1000px) {
+        top: 42.7775%;
+        right: 10.9375%;
+        width: 6.71875%;
+      }
+    }
+    .deco-4{
+      top: 1366px;
+      left: -40px;
+      img{
+        animation: updown 3s infinite ease-in-out alternate;
+      }
+      @media (max-width: 1000px) {
+        top: 78.2938%;
+        left: 6.25%;
+        width: 12.1875%;
+      }
+    }
+    .deco-5{
+      bottom: 240px;
+      right: -10px;
+      @media (max-width: 1000px) {display: none;}
+    }
+
   }
   .roulette-title{
     text-align: center;
     padding-top: 14.5rem;
+    @media (max-width: 1000px) {
+      padding-top: 0;      
+    }
   }
   &-input{
     display: flex;
@@ -17,6 +73,13 @@
     padding: 2rem;
     margin: 0 auto;
     margin-top: 6rem;
+    @media (max-width: 1000px) {      width: 100%;
+      height: auto;
+      margin-top: 0;
+      padding: 0;
+      border: 0;
+      position: relative;
+    }
     input{
       flex: 1;
       font-family: var(--font-weight-600);
@@ -25,6 +88,18 @@
       font-size: 3.4rem;
       background-color: #e6e6e6;
       padding-left: 3.5rem;
+      @media (max-width: 1000px) {
+        background: none;
+        position: absolute;
+        border: 0;
+        padding-left: 5%;
+        
+        left: 3%;
+        top: 15%;
+        height: 69%;
+        font-size: 5vw;
+        width: 73%;
+      }
       &::placeholder{
         color: #b3b3b3;
       }
@@ -36,29 +111,80 @@
       font-family: var(--font-weight-700);
       font-size: 3.4rem;
       color: #111;
+      @media (max-width: 1000px) {
+        width: 22%;
+        font-size: 0;
+        padding: 0;
+        position: absolute;
+        top: 15%;
+        height: 69%;
+        right: 3%;
+        background: none;
+      }
     }
   }
 }
 
 
 .wheel {
-    position: relative;
-    width: 870px;
-    height: 860px;
-    background: url(../assets/roulette/wheel.png) no-repeat center center;
-    transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
+  width: 871px;
+  margin: 95px auto 0;
+  &-inner {
+    transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transform-origin: center center;
   }
-  
-.wheel .segment {
-  position: absolute;
-  width: 50%;
-  height: 50%;
+  position: relative;
+  @media (max-width: 1000px) {
+    width: 100%;
+    height: auto;
+    margin-top: 10.5363%;
+    position: relative;
+    padding: 0 3.4375%;
+  }
+  .pointer{
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    @media (max-width: 1000px) {
+      top: -5.4637%;
+      width: 11.40625%;
+    }
+  }
+  &-text{
+    text-align: center;
+    margin-top: 7rem;
+    @media (max-width: 1000px) {
+      margin-top: 0;
+    }
+  }
+}
+
+
+.popup {
+  position: fixed;
   top: 0;
-  left: 50%;
-  transform-origin: 0% 100%;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.85);
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
-  font-weight: bold;
+  .popup-inner{
+    position: relative;
+    display: inline-block;
+    button{
+      position: absolute;
+      left: 15%;
+      right: 15%;
+      bottom: 22%;
+      height: 23%;
+      font-size: 0;
+      display: block;
+    }
+  }
 }

@@ -2,91 +2,153 @@ import axios from 'axios'
 import React, { useRef, useState } from 'react'
 import './Roulette.scss'
 
+const Popup = ({ type = 'info', img, onClose }) => {
+  const handleClick = () => {
+    if (type === 'success') {
+      window.open('https://naver.me/xoQtcIHD', '_blank')
+    }
+    onClose()
+  }
+
+  return (
+    
+    <div className={`popup ${type}`}>
+      <div className="popup-inner">
+        <img src={img} alt="" />
+        <button onClick={handleClick}>확인</button>
+      </div>
+    </div>
+  )
+}
+
 const Roulette = () => {
   const [ticket, setTicket] = useState('')
-  const [valid, setValid] = useState(null)
-  const [usedBefore, setUsedBefore] = useState(false)
-  const [usedAfter, setUsedAfter] = useState(false)
-  const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [prizeRank, setPrizeRank] = useState(null)
   const [rotDeg, setRotDeg] = useState(0)
+  const [popup, setPopup] = useState(null) // 팝업 상태 관리
 
   const wheelRef = useRef(null)
 
   const handleTicket = async () => {
     setLoading(true)
-    setError(null)
-    setValid(null)
-    setUsedBefore(false)
-    setUsedAfter(false)
-    setPrizeRank(null)
-
+    setPopup(null)
+  
     try {
       const { data } = await axios.post('http://localhost:3000/api/spin', { code: ticket })
-      const rank = data.rank
-
-      setValid(true)
-      setUsedAfter(true)
-      setPrizeRank(rank)
-
-      spinToRank(rank)
-    } catch (err) {
-      if (err.response?.status === 404) {
-        setValid(false)
-      } else if (err.response?.data?.message === 'already used') {
-        setValid(true)
-        setUsedBefore(true)
-      } else {
-        setError(err.response?.data?.message || err.message)
+  
+      if (!data.success) {
+        if (data.reason === 'invalid') {
+          setPopup({
+            type: 'error',
+            img: '/src/assets/popup/invalid.png',
+          })
+        } else if (data.reason === 'used') {
+          setPopup({
+            type: 'error',
+            img: '/src/assets/popup/invalid.png',
+          })
+        } else {
+          setPopup({
+            type: 'error',
+            img: '/src/assets/popup/error.png',
+          })
+        }
+        return
       }
+  
+      spinToRank(data.rank)
+      setTimeout(() => {
+        setPopup({
+          type: 'success',
+          img: `/src/assets/popup/rank-${data.rank}.png`,
+        })
+        setTicket('')
+      }, 5000)
+  
+    } catch (err) {
+      setPopup({
+        type: 'error',
+        img: '/src/assets/popup/error.png',
+      })
     } finally {
       setLoading(false)
     }
   }
+  
 
   const spinToRank = (rank) => {
     const baseDegPerSegment = 360 / 5
     const segmentIndex = rank - 1
-    const targetDeg = 360 * 5 + (360 - segmentIndex * baseDegPerSegment)  // 5바퀴 돌고 해당 등수 위치에 멈춤
+    const stopDeg = 360 - (segmentIndex * baseDegPerSegment)
+    const fullRotations = 8 * 360 // 8바퀴
 
-    setRotDeg(targetDeg)
+    const totalDeg = fullRotations + stopDeg
+
+    setRotDeg(prev => prev + totalDeg)
+
+    
   }
 
-  return (
-    <div className="roulette">
-      <div className="roulette-inner">
-        <div className="roulette-title">
-          <h2><img src="/src/assets/roulette/roulette-title.png" alt="" /></h2>
-        </div>
-        <div className="roulette-input">
-          <input
-            value={ticket}
-            onChange={e => setTicket(e.target.value)}
-            maxLength={12}
-            placeholder="응모권 번호 12자리를 입력해주세요." 
-          />
-          <button onClick={handleTicket} disabled={loading}>
-            룰렛 돌리기
-          </button>
-        </div>
+  const closePopup = () => setPopup(null)
 
-        <div className="pointer"></div>
-        <div
-          className="wheel"
-          ref={wheelRef}
-          style={{ transform: `rotate(${rotDeg}deg)` }}
-        >
-         
+  return (
+    <>
+      {popup && (
+        <Popup
+          type={popup.type}
+          img={popup.img}
+          onClose={closePopup}
+        />
+      )}
+
+      <div className="roulette">
+        <div className="roulette-inner">
+          <div className="roulette-title">
+            <h2>
+              <img className='pc' src="/src/assets/roulette/roulette-title.png" alt="" />
+              <img className='mobile' src="/src/assets/roulette/roulette-title-mobile.png" alt="" />
+            </h2>
+          </div>
+          <div className="roulette-input">
+            <div className="input-mobile mobile"><img src="/src/assets/roulette/input.png" alt="" /></div>
+            <input
+              value={ticket}
+              onChange={e => setTicket(e.target.value)}
+              maxLength={12}
+              placeholder="응모권 번호 12자리를 입력해주세요."
+            />
+            <button onClick={handleTicket} disabled={loading}>
+              룰렛 돌리기
+            </button>
+          </div>
+
+          <div className="wheel">
+            <div className="pointer">
+              <img src="/src/assets/roulette/pointer.png" alt="" className='pc' />
+              <img src="/src/assets/roulette/pointer-mobile.png" alt="" className='mobile' />
+            </div>
+            <div
+              className="wheel-inner"
+              ref={wheelRef}
+              style={{ transform: `rotate(${rotDeg}deg)` }}
+            >
+              <img src="/src/assets/roulette/wheel.png" alt=""
+               />
+            </div>
+          </div>
+          <div className="wheel-text">
+            <div className="pc"><img src="/src/assets/roulette/txt-pc.png" alt="" /></div>
+            <div className="mobile"><img src="/src/assets/roulette/txt-mobile.png" alt="" /></div>
+          </div>
+          <div className="deco deco-1"><img src="/src/assets/roulette/deco-1.png" alt="" /></div>
+          <div className="deco deco-2"><img src="/src/assets/roulette/deco-2.png" alt="" /></div>
+          <div className="deco deco-3"><img src="/src/assets/roulette/deco-3.png" alt="" /></div>
+          <div className="deco deco-4"><img src="/src/assets/roulette/deco-4.png" alt="" /></div>
+          <div className="deco deco-5"><img src="/src/assets/roulette/deco-5.png" alt="" /></div>
         </div>
       </div>
-
-      {valid === false && <p className="error">유효하지 않은 번호야</p>}
-      {valid && usedBefore && <p className="error">이미 사용된 번호야</p>}
-      {usedAfter && <p className="success">🎉 {prizeRank}등 당첨! 코드 사용 처리 완료!</p>}
-      {error && <p className="error">에러: {error}</p>}
-    </div>
+    </>
   )
 }
 
-export default Roulette
+export default Roulette;

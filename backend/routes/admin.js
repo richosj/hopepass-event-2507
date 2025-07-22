@@ -11,6 +11,8 @@ router.get('/login', (req, res) => {
 
 // 로그인 처리
 router.post('/login', express.urlencoded({ extended: true }), (req, res) => {
+  console.log('로그인 시도', req.body);
+
   const { id, pw } = req.body;
   if (id === process.env.ADMIN_ID && pw === process.env.ADMIN_PASS) {
     res.cookie('admin', id, { httpOnly: true });

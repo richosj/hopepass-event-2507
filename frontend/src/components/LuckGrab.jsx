@@ -1,17 +1,74 @@
-import React from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useEffect } from 'react';
+
 import './LuckGrab.scss';
 
+gsap.registerPlugin(ScrollTrigger)
+
 const LuckGrab = () => {
+
+  useEffect(() => {
+    ScrollTrigger.matchMedia({
+      // PC만 적용
+      '(min-width: 1001px)': () => {
+        const targets = [
+          '.luck__title',
+          '.luck__step',
+          '.luck__step-text',
+          '.luck__info',
+          '.luck__mission-title',
+        ];
+  
+        gsap.set(targets, { opacity: 0, y: 100 });
+        gsap.to(targets, {
+          scrollTrigger: {
+            trigger: '.luck__inner',
+            start: 'top 50%',
+            toggleActions: 'play none none none',
+          },
+          opacity: 1,
+          y: 0,
+          duration:1.2,
+          ease: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+          stagger: 0.3,
+        });
+        // mission-item 순차 등장
+        gsap.utils.toArray('.luck__mission-item').forEach((el, i) => {
+          gsap.set(el, { opacity: 0, y: 100 });
+          gsap.to(el, {
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            delay: i * 0.1,
+            ease: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+          });
+        });
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
+
+
   return (
     <div className="luck">
       <div className="luck__inner">
         <div className="luck__container">
           <div className="luck__title">
-            <span><img src="/src/assets/lucky/title.png" alt="" /></span>
+            <span className='pc'><img src="/src/assets/lucky/title.png" alt="" /></span>
+            <span className='mobile'><img src="/src/assets/lucky/mobile-title.png" alt="" /></span>
           </div>
 
           <div className="luck__step">
-            <img src="/src/assets/lucky/step.png" alt="" />
+            <img className='pc' src="/src/assets/lucky/step.png" alt="" />
+            <img className='mobile' src="/src/assets/lucky/mobile-step.png" alt="" />
             <div className="luck__step-text">
               <p>
                 * 희망ON 드로우 희망 한마디, 희망 플러스 이벤트 참여자는<br />
@@ -29,11 +86,14 @@ const LuckGrab = () => {
 
           <div className="luck__mission">
             <div className="luck__mission-title">
-              <div className="title">
+              <div className="title pc">
                 <img src="/src/assets/lucky/mission-title.png" alt="" />
                 <span className="bubble">
                   <img src="/src/assets/lucky/mission-title-bubble.png" alt="" />
                 </span>
+              </div>
+              <div className='mobile'>
+                <img src="/src/assets/lucky/mobile-mission-title.png" alt="" />
               </div>
             </div>
 
@@ -69,11 +129,16 @@ const LuckGrab = () => {
                       </div>
 
                       <div className="mission-actions">
-                        <button className="btn-go-mission">미션 하러 가기</button>
-                        <button className="btn-certify-mission">미션 인증하기</button>
+                        <a href="https://www.heemangstudio.org/member/joinSelect" className="btn-go-mission" target='_blank'>미션 하러 가기</a>
+                        <a href="https://naver.me/FfBmdVQq" className="btn-certify-mission" target='_blank'>미션 인증하기</a>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="mobile-box">
+                  <img src="/src/assets/lucky/mission-mobile-01.png" alt="" />
+                  <a href="https://www.heemangstudio.org/member/joinSelect" className='btn-go-mission' target='_blank'>미션 하러 가기</a>
+                  <a href="https://naver.me/FfBmdVQq" className='btn-certify-mission' target='_blank'>미션 인증하기</a>
                 </div>
               </div>
 
@@ -103,11 +168,16 @@ const LuckGrab = () => {
                       </div>
 
                       <div className="mission-actions">
-                        <button className="btn-go-mission">미션 하러 가기</button>
-                        <button className="btn-certify-mission">미션 인증하기</button>
+                        <a href="https://www.heemangstudio.org/hope/campaignList/funding" className="btn-go-mission" target='_blank'>미션 하러 가기</a>
+                        <a href="https://naver.me/FfBmdVQq" className="btn-certify-mission" target='_blank'>미션 인증하기</a>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="mobile-box">
+                  <img src="/src/assets/lucky/mission-mobile-02.png" alt="" />
+                  <a href="https://www.heemangstudio.org/hope/campaignList/funding" className='btn-go-mission' target='_blank'>미션 하러 가기</a>
+                  <a href="https://naver.me/FfBmdVQq" className='btn-certify-mission' target='_blank'>미션 인증하기</a>
                 </div>
               </div>
               {/* 미션 03 */}
@@ -137,11 +207,16 @@ const LuckGrab = () => {
                       </div>
 
                       <div className="mission-actions">
-                        <button className="btn-go-mission">미션 하러 가기</button>
-                        <button className="btn-certify-mission">미션 인증하기</button>
+                        <a href="https://www.heemangstudio.org/customer/proposalList" className="btn-go-mission" target='_blank'>미션 하러 가기</a>
+                        <a href="https://naver.me/FfBmdVQq" className="btn-certify-mission" target='_blank'>미션 인증하기</a>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="mobile-box">
+                  <img src="/src/assets/lucky/mission-mobile-03.png" alt="" />
+                  <a href="https://www.heemangstudio.org/customer/proposalList" className='btn-go-mission' target='_blank'>미션 하러 가기</a>
+                  <a href="https://naver.me/FfBmdVQq" className='btn-certify-mission' target='_blank'>미션 인증하기</a>
                 </div>
               </div>
               {/* 미션 04 */}
@@ -170,11 +245,16 @@ const LuckGrab = () => {
                       </div>
 
                       <div className="mission-actions">
-                        <button className="btn-go-mission">미션 하러 가기</button>
-                        <button className="btn-certify-mission">미션 인증하기</button>
+                        <a href="https://pf.kakao.com/_xhxidEG" className="btn-go-mission" target='_blank'>미션 하러 가기</a>
+                        <a href="https://naver.me/FfBmdVQq" className="btn-certify-mission" target='_blank'>미션 인증하기</a>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="mobile-box">
+                  <img src="/src/assets/lucky/mission-mobile-04.png" alt="" />
+                  <a href="https://pf.kakao.com/_xhxidEG" className='btn-go-mission' target='_blank'>미션 하러 가기</a>
+                  <a href="https://naver.me/FfBmdVQq" className='btn-certify-mission' target='_blank'>미션 인증하기</a>
                 </div>
               </div>
               {/* 미션 05 */}
@@ -204,11 +284,16 @@ const LuckGrab = () => {
                       </div>
 
                       <div className="mission-actions">
-                        <button className="btn-go-mission">미션 하러 가기</button>
-                        <button className="btn-certify-mission">미션 인증하기</button>
+                        <a href="https://page.stibee.com/subscriptions/185736" className="btn-go-mission" target='_blank'>미션 하러 가기</a>
+                        <a href="https://naver.me/FfBmdVQq" className="btn-certify-mission" target='_blank'>미션 인증하기</a>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="mobile-box">
+                  <img src="/src/assets/lucky/mission-mobile-05.png" alt="" />
+                  <a href="#" className='btn-go-mission' target='_blank'>미션 하러 가기</a>
+                  <a href="#" className='btn-certify-mission' target='_blank'>미션 인증하기</a>
                 </div>
               </div>
               
@@ -217,7 +302,6 @@ const LuckGrab = () => {
             </div>
 
           </div>
-
         </div>
       </div>
     </div>

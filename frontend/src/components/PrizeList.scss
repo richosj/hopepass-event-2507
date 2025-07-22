@@ -1,16 +1,26 @@
-img{vertical-align: top;}
+
 .prize{
     background:#111111 url(../assets/prize/bg.png) no-repeat center center;
     height: 1155px;
     display: flex;
     justify-content: center;
     align-items: center;
+    @media (max-width : 1000px){
+        height: auto;
+        background: none;
+        display: block;
+    }
     &-list{
         width: 884px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
         gap: 4.5rem 0;
+    }
+    @media (max-width: 1000px) {
+        background: url(../assets/prize/bg-mobile.png) no-repeat center top / 100% auto;
+        height: auto;
+        
     }
 }
 .prize-title{
@@ -52,7 +62,15 @@ img{vertical-align: top;}
     .item{bottom: 3rem;}
 }
 .prize-item-grid {
-    display: grid;
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 50px 25px;
-  }
+display: grid;
+grid-template-columns: repeat(2,minmax(0,1fr));
+gap: 50px 25px;
+}
+
+.prize-mobile{display: none;}
+@media (max-width: 1000px) {
+    .prize-inner{display: none;}
+    .prize-mobile{display: block;
+        img{width: 100%;}
+    }
+}
