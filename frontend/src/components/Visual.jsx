@@ -1,11 +1,11 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import './Visual.scss';
 
 const Visual = () => {
   return (
     <div className="visual">
-      {/* <Link to="/admin/dashboard">관리자 페이지</Link> */}
+      <Link to="/admin/dashboard">관리자 페이지</Link>
       <div className="visual__inner">
         <div className="visual__container">
           <div className='icon-01 icon-position'>

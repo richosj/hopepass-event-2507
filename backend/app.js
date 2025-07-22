@@ -15,17 +15,15 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-// 정적 파일 서빙 (React 빌드된 결과)
+// 👉 React 빌드 파일 서빙
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => res.send('서버 정상 작동 중'));
-
-// API 라우팅
+// 👉 API 라우팅
 app.use('/api', apiRoutes);
 app.use('/admin', adminRoutes);
 
-// React로 관리자 페이지 SPA 진입점 제공
-app.get('/admin/dashboard', (req, res) => {
+// 👉 모든 경로는 React SPA index.html로 응답 (중요!)
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 

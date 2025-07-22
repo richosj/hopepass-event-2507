@@ -19,19 +19,25 @@ router.post('/spin', async (req, res) => {
     )
     const row = result.rows[0]
 
-    // ✅ 코드 없음 → 404 ❌ → 200으로 보내기
+    // 관리자 할당 안됨
+    if (!row.assigned_to) {
+      await client.query('ROLLBACK')
+      return res.json({ success: false, reason: 'invalid' }) 
+    }
+
+    // 코드 아예 없을 시
     if (!row) {
       await client.query('ROLLBACK')
-      return res.json({ success: false, reason: 'invalid' })  // 🔥 여기 고침
+      return res.json({ success: false, reason: 'invalid' }) 
     }
 
-    // ✅ 이미 사용됨 → 400 ❌ → 200으로 보내기
+    // 이미 사용 완료
     if (row.is_used) {
       await client.query('ROLLBACK')
-      return res.json({ success: false, reason: 'used' })  // 🔥 여기 고침
+      return res.json({ success: false, reason: 'used' }) 
     }
 
-    // 등수별 사용 수
+    // 등수별 사용 수 확인
     const countResult = await client.query(`
       SELECT prize_type, COUNT(*) as count
       FROM event_codes
