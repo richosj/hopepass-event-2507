@@ -34,7 +34,11 @@ const Roulette = () => {
     setPopup(null)
   
     try {
-      const { data } = await axios.post('http://localhost:3000/api/spin', { code: ticket })
+      //const { data } = await axios.post('http://localhost:3000/api/spin', { code: ticket })
+      const { data } = await axios.post(`${import.meta.env.VITE_API_BASE}/api/spin`, { code: ticket }, {
+        withCredentials: true
+      });
+      
   
       if (!data.success) {
         if (data.reason === 'invalid') {

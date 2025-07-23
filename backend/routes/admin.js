@@ -36,7 +36,6 @@ router.post('/login', express.urlencoded({ extended: true }), (req, res) => {
       httpOnly: true,
       path: '/',
       sameSite: 'None',
-      //secure: FRONT_URL?.startsWith('https://') || false
       secure: true
     });
 
