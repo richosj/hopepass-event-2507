@@ -40,17 +40,17 @@ const Roulette = () => {
         if (data.reason === 'invalid') {
           setPopup({
             type: 'error',
-            img: '/src/assets/popup/invalid.png',
+            img: '/assets/popup/invalid.png',
           })
         } else if (data.reason === 'used') {
           setPopup({
             type: 'error',
-            img: '/src/assets/popup/invalid.png',
+            img: '/assets/popup/invalid.png',
           })
         } else {
           setPopup({
             type: 'error',
-            img: '/src/assets/popup/error.png',
+            img: '/assets/popup/error.png',
           })
         }
         return
@@ -60,7 +60,7 @@ const Roulette = () => {
       setTimeout(() => {
         setPopup({
           type: 'success',
-          img: `/src/assets/popup/rank-${data.rank}.png`,
+          img: `/assets/popup/rank-${data.rank}.png`,
         })
         setTicket('')
       }, 5000)
@@ -68,7 +68,7 @@ const Roulette = () => {
     } catch (err) {
       setPopup({
         type: 'error',
-        img: '/src/assets/popup/error.png',
+        img: '/assets/popup/error.png',
       })
     } finally {
       setLoading(false)
@@ -105,12 +105,12 @@ const Roulette = () => {
         <div className="roulette-inner">
           <div className="roulette-title">
             <h2>
-              <img className='pc' src="/src/assets/roulette/roulette-title.png" alt="" />
-              <img className='mobile' src="/src/assets/roulette/roulette-title-mobile.png" alt="" />
+              <img className='pc' src="/assets/roulette/roulette-title.png" alt="" />
+              <img className='mobile' src="/assets/roulette/roulette-title-mobile.png" alt="" />
             </h2>
           </div>
           <div className="roulette-input">
-            <div className="input-mobile mobile"><img src="/src/assets/roulette/input.png" alt="" /></div>
+            <div className="input-mobile mobile"><img src="/assets/roulette/input.png" alt="" /></div>
             <input
               value={ticket}
               onChange={e => setTicket(e.target.value)}
@@ -124,27 +124,27 @@ const Roulette = () => {
 
           <div className="wheel">
             <div className="pointer">
-              <img src="/src/assets/roulette/pointer.png" alt="" className='pc' />
-              <img src="/src/assets/roulette/pointer-mobile.png" alt="" className='mobile' />
+              <img src="/assets/roulette/pointer.png" alt="" className='pc' />
+              <img src="/assets/roulette/pointer-mobile.png" alt="" className='mobile' />
             </div>
             <div
               className="wheel-inner"
               ref={wheelRef}
               style={{ transform: `rotate(${rotDeg}deg)` }}
             >
-              <img src="/src/assets/roulette/wheel.png" alt=""
+              <img src="/assets/roulette/wheel.png" alt=""
                />
             </div>
           </div>
           <div className="wheel-text">
-            <div className="pc"><img src="/src/assets/roulette/txt-pc.png" alt="" /></div>
-            <div className="mobile"><img src="/src/assets/roulette/txt-mobile.png" alt="" /></div>
+            <div className="pc"><img src="/assets/roulette/txt-pc.png" alt="" /></div>
+            <div className="mobile"><img src="/assets/roulette/txt-mobile.png" alt="" /></div>
           </div>
-          <div className="deco deco-1"><img src="/src/assets/roulette/deco-1.png" alt="" /></div>
-          <div className="deco deco-2"><img src="/src/assets/roulette/deco-2.png" alt="" /></div>
-          <div className="deco deco-3"><img src="/src/assets/roulette/deco-3.png" alt="" /></div>
-          <div className="deco deco-4"><img src="/src/assets/roulette/deco-4.png" alt="" /></div>
-          <div className="deco deco-5"><img src="/src/assets/roulette/deco-5.png" alt="" /></div>
+          <div className="deco deco-1"><img src="/assets/roulette/deco-1.png" alt="" /></div>
+          <div className="deco deco-2"><img src="/assets/roulette/deco-2.png" alt="" /></div>
+          <div className="deco deco-3"><img src="/assets/roulette/deco-3.png" alt="" /></div>
+          <div className="deco deco-4"><img src="/assets/roulette/deco-4.png" alt="" /></div>
+          <div className="deco deco-5"><img src="/assets/roulette/deco-5.png" alt="" /></div>
         </div>
       </div>
     </>

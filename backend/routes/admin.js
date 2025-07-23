@@ -9,22 +9,60 @@ router.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '../views/login.html'));
 });
 
+
+
 // 로그인 처리
+const FRONT_URL = process.env.FRONT_URL?.trim();
+
 router.post('/login', express.urlencoded({ extended: true }), (req, res) => {
   console.log('로그인 시도', req.body);
 
   const { id, pw } = req.body;
-  if (id === process.env.ADMIN_ID && pw === process.env.ADMIN_PASS) {
-    res.cookie('admin', id, { httpOnly: true });
-    return res.redirect('/admin/dashboard');
+  const admin = req.cookies?.admin;
+  const expected = process.env.ADMIN_ID?.trim();
+  const isDev = req.hostname === 'localhost' || process.env.NODE_ENV === 'development';
+
+  // ✅ 이미 로그인 상태면 리다이렉트만 응답
+  if (admin && expected && admin === expected) {
+    return res.json({
+      success: true,
+      alreadyLoggedIn: true,
+      redirectTo: `${FRONT_URL}/admin/dashboard`,
+    });
   }
-  res.status(401).send('로그인 실패');
+
+  if (id === expected && pw === process.env.ADMIN_PASS) {
+    res.cookie('admin', id, {
+      httpOnly: true,
+      path: '/',
+      sameSite: 'None',
+      //secure: FRONT_URL?.startsWith('https://') || false
+      secure: true
+    });
+
+    console.log('로그인 성공');
+
+    return res.json({
+      success: true,
+      redirectTo: `${FRONT_URL}/admin/dashboard`,
+    });
+  }
+
+  console.log('로그인 실패');
+  res.status(401).json({ success: false, message: '아이디 또는 비밀번호가 잘못되었습니다.' });
 });
+
 
 // 관리자 대시보드 React 진입 (React는 app.js에서 정적 파일로 제공함)
 router.get('/dashboard', auth, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
+
+router.post('/logout', (req, res) => {
+  res.clearCookie('admin', { path: '/' });
+  res.json({ success: true });
+});
+
 
 // 관리자 코드 목록 API (React에서 호출)
 router.get('/codes', auth, async (req, res) => {

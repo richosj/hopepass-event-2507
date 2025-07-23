@@ -150,18 +150,55 @@ input::-webkit-contacts-auto-fill-button {
 </head>
 <body>
     <div class="content">
-      <form method="POST" action="/admin/login">
+      <form id="loginForm">
         <h2>로그인</h2>
         <div class="input-box">
           <input type="text" id="id" name="id" placeholder="아이디 입력" required />
           <i class="ri-user-fill"></i>
         </div>
         <div class="input-box">
-          <input type="password" id="password" name="pw" placeholder="비밀번호 입력" required autocomplete="new-password" />
+          <input type="password" id="password" name="pw" autocomplete="off" placeholder="비밀번호 입력" required />
           <i class="ri-eye-off-fill toggle-password" id="togglePassword"></i>
         </div>
+        <div id="error" style="color: red; text-align: center; margin-bottom: 10px;"></div>
         <button type="submit" class="btnn">로그인</button>
       </form>
     </div>
+    <script>
+      const form = document.getElementById('loginForm');
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+  
+        const formData = new FormData(form);
+        const id = formData.get('id');
+        const pw = formData.get('pw');
+  
+        try {
+          const res = await fetch('/admin/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ id, pw }),
+            credentials: 'include', 
+          });
+  
+          if (res.ok) {
+            const result = await res.json();
+            if (result.alreadyLoggedIn) {
+              alert('이미 로그인되어 있습니다.');
+            }
+            //window.location.href = result.redirectTo
+            window.location.href = '/admin/dashboard';
+
+          } else {
+            const result = await res.json();
+            document.getElementById('error').textContent = result.message || '로그인 실패';
+          }
+        } catch (err) {
+          document.getElementById('error').textContent = '서버 오류';
+        }
+      };
+    </script>
 </body>
 </html>

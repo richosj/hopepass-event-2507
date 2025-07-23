@@ -1,6 +1,6 @@
 
 .prize{
-    background:#111111 url(../assets/prize/bg.png) no-repeat center center;
+    background:#111111 url(/assets/prize/bg.png) no-repeat center center;
     height: 1155px;
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@
         gap: 4.5rem 0;
     }
     @media (max-width: 1000px) {
-        background: url(../assets/prize/bg-mobile.png) no-repeat center top / 100% auto;
+        background: url(/assets/prize/bg-mobile.png) no-repeat center top / 100% auto;
         height: auto;
         
     }

@@ -28,9 +28,9 @@
 
 .visual {
     height: 103rem;
-    background:#1c1c1c url('../assets/visual/bg.png') no-repeat center center;
+    background:#1c1c1c url('/assets/visual/bg.png') no-repeat center center;
     @media (max-width: 1000px) {
-        background:#1c1c1c url('../assets/visual/bg-mobile.png') no-repeat center center / cover;
+        background:#1c1c1c url('/assets/visual/bg-mobile.png') no-repeat center center / cover;
         height: auto;
         
     }
@@ -39,7 +39,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: url('../assets/visual/bg-deco.png') no-repeat center top;
+        background: url('/assets/visual/bg-deco.png') no-repeat center top;
         margin: 0 var(--gap);
         @media (max-width: 1000px) {
             background: none;

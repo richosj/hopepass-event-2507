@@ -16,12 +16,17 @@ const AdminDashboard = () => {
   const fetchCodes = async () => {
     try {
       const params = { ...filters, page, limit }
-      const { data } = await axios.get('/admin/codes', { params })
+      const { data } = await axios.get('/admin/codes', { params, withCredentials: true })
       setCodes(data.data)
       setTotal(data.total)
       setStats(data.stats)
     } catch (err) {
       console.error('관리자 데이터 로딩 실패', err)
+  
+      if (err.response?.status === 401) {
+        alert('로그인이 만료되었습니다. 다시 로그인해주세요.')
+        window.location.href = '/admin/login'
+      }
     }
   }
 
@@ -47,32 +52,6 @@ const AdminDashboard = () => {
 
   return (
     <>
-    <style>{`
-    html, body{
-        height: 100%;
-    }
-    html{font-size: 100% !important;}
-
-    body{font-family: 'Freesentation 4 Regular';}
-    
-    .admin-scope{
-        .table{
-            .table-secondary{
-                background-color: #f8f9fa;
-            }
-            .table-secondary th{
-                background-color: #f8f9fa;
-                text-align: center;
-            }
-            td{
-                text-align: center;
-            }
-        }
-        .container{
-            max-width: 1000px;
-        }
-    }`}
-    </style>
     <div className='admin-scope'>
       <div className="container-fluid">
         <div className="row">
@@ -85,7 +64,8 @@ const AdminDashboard = () => {
                 <h2>난수 코드 관리자</h2>
                 <button
                   className="btn btn-outline-danger"
-                  onClick={() => {
+                  onClick={async () => {
+                    await axios.post('/admin/logout', {}, { withCredentials: true }) // ✅ 쿠키 포함해서 요청
                     localStorage.removeItem('adminLoggedIn');
                     localStorage.removeItem('adminLoginTime');
                     window.location.href = '/admin/login';

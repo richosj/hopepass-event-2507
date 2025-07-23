@@ -7,6 +7,11 @@
     "pg": "^8.16.3"
   },
   "devDependencies": {
+    "dotenv-cli": "^9.0.0",
     "nodemon": "^3.1.10"
+  },
+  "scripts": {
+    "dev": "dotenv -e .env.development -- nodemon app.js",
+    "prod": "dotenv -e .env.production -- node app.js"
   }
 }
