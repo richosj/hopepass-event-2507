@@ -9,7 +9,6 @@ const adminRoutes = require('./routes/admin');     // 관리자 기능 API
 
 const app = express();
 
-
 //  CORS 설정 - 프론트 주소 허용
 app.use(cors({
   origin: 'https://heemangpass.co.kr', // 프론트 배포 주소

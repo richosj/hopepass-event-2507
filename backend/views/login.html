@@ -165,6 +165,29 @@ input::-webkit-contacts-auto-fill-button {
       </form>
     </div>
     <script>
+      window.addEventListener('DOMContentLoaded', async () => {
+        try {
+          const res = await fetch('/admin/login', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({ id: '', pw: '' }) // 실제 요청은 의미 없고 인증만 체크
+          });
+
+          if (res.ok) {
+            const result = await res.json();
+            if (result.alreadyLoggedIn) {
+              window.location.href = '/admin/dashboard';
+            }
+          }
+        } catch (err) {
+          // 무시 (로그인 안 된 경우 등)
+        }
+      });
+
+      
       const form = document.getElementById('loginForm');
       form.onsubmit = async (e) => {
         e.preventDefault();
@@ -180,7 +203,7 @@ input::-webkit-contacts-auto-fill-button {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({ id, pw }),
-            credentials: 'include', 
+            credentials: 'include',
           });
   
           if (res.ok) {
@@ -188,9 +211,7 @@ input::-webkit-contacts-auto-fill-button {
             if (result.alreadyLoggedIn) {
               alert('이미 로그인되어 있습니다.');
             }
-            //window.location.href = result.redirectTo
-            window.location.href = '/admin/dashboard';
-
+            window.location.href = result.redirectTo;
           } else {
             const result = await res.json();
             document.getElementById('error').textContent = result.message || '로그인 실패';
