@@ -1,0 +1,138 @@
+// src/styles/admin/style.scss
+.admin-scope {
+    font-family: 'system-ui', sans-serif;
+    background-color: #f9fafb;
+    min-height: 100vh;
+    padding: 2rem;
+  
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+  
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      background-color: #e0f2ff;
+      border: 1px solid #bae6fd;
+  
+      strong {
+        color: #0369a1;
+      }
+  
+      span {
+        display: inline-block;
+        margin-right: 12px;
+        font-size: 0.95rem;
+      }
+    }
+  
+    .input-group {
+      display: flex;
+      gap: 8px;
+  
+      select,
+      input {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.95rem;
+      }
+  
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #3b82f6;
+      }
+  
+      .btn {
+        padding: 8px 12px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+  
+        &:hover {
+          background: #2563eb;
+        }
+      }
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+  
+      th,
+      td {
+        border: 1px solid #e5e7eb;
+        padding: 12px;
+        text-align: center;
+        font-size: 0.95rem;
+      }
+  
+      thead {
+        background: #f3f4f6;
+        th {
+          font-weight: 600;
+          color: #374151;
+        }
+      }
+  
+      tbody tr:nth-child(even) {
+        background-color: #f9fafb;
+      }
+    }
+  
+    .pagination {
+      display: flex;
+      list-style: none;
+      gap: 8px;
+      padding: 0;
+      margin-top: 2rem;
+  
+      .page-item {
+        .page-link {
+          padding: 6px 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          background: white;
+          cursor: pointer;
+          font-size: 0.9rem;
+  
+          &.active,
+          &:disabled {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+          }
+        }
+      }
+    }
+  
+    .logout-btn {
+      background: none;
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+  
+      &:hover {
+        background: #ef4444;
+        color: white;
+      }
+    }
+  }

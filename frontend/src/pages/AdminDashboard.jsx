@@ -1,7 +1,7 @@
 // src/pages/AdminDashboard.jsx
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import '../admin-bootstrap.scss';
 
 
 const AdminDashboard = () => {
@@ -81,7 +81,7 @@ const AdminDashboard = () => {
           </div> */}
           <div className="container">
             <div className="px-md-4">
-              <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <div className="">
                 <h2>난수 코드 관리자</h2>
                 <button
                   className="btn btn-outline-danger"
