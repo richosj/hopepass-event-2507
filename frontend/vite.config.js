@@ -14,6 +14,6 @@ export default defineConfig({
     proxy: {
       '/admin': 'http://localhost:3000',
     },
-    historyApiFallback: true, // 🔥 이거 추가
+    historyApiFallback: true,
   },
 })

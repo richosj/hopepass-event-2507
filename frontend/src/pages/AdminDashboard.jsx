@@ -37,6 +37,7 @@ const AdminDashboard = () => {
       setAssignName(prev => ({ ...prev, [id]: '' }))
       fetchCodes()
     } catch (err) {
+      console.error('할당 실패:', err)
       alert('할당 실패')
     }
   }
@@ -60,7 +61,7 @@ const AdminDashboard = () => {
           </div> */}
           <div className="container">
             <div className="px-md-4">
-              <div className="">
+              <div className="admin-header">
                 <h2>난수 코드 관리자</h2>
                 <button
                   className="btn btn-outline-danger"
@@ -88,7 +89,7 @@ const AdminDashboard = () => {
 
 
               <div className='pb-3'>
-                <div className="input-group" style={{width: '500px'}}>
+                <div className="input-group">
                   <select className="form-select" name="used" onChange={handleChange} value={filters.used}>
                     <option value="">사용여부 전체</option>
                     <option value="true">사용</option>
@@ -130,8 +131,18 @@ const AdminDashboard = () => {
                   <tr key={code.id}>
                     <td>{code.id}</td>
                     <td>{code.code}</td>
-                    <td>{code.prize_type || '-'}</td>
-                    <td>{code.is_used ? '사용' : '미사용'}</td>
+                    <td>
+                      {code.prize_type ? (
+                        <span className="badge badge-info">{code.prize_type}등</span>
+                      ) : (
+                        '-'
+                      )}
+                    </td>
+                    <td>
+                      <span className={`badge ${code.is_used ? 'badge-success' : 'badge-warning'}`}>
+                        {code.is_used ? '사용' : '미사용'}
+                      </span>
+                    </td>
                     <td>{code.assigned_to || '-'}</td>
                     <td>{code.used_at ? new Date(code.used_at).toLocaleString() : '-'}</td>
                     <td>

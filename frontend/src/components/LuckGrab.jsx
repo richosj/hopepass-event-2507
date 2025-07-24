@@ -31,7 +31,7 @@ const LuckGrab = () => {
           y: 0,
           duration:1.2,
           ease: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
-          stagger: 0.3,
+          //stagger: 0.3,
         });
         // mission-item 순차 등장
         gsap.utils.toArray('.luck__mission-item').forEach((el, i) => {
@@ -44,7 +44,7 @@ const LuckGrab = () => {
             opacity: 1,
             y: 0,
             duration: 0.5,
-            delay: i * 0.1,
+            //delay: i * 0.1,
             ease: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
           });
         });

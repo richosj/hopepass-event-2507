@@ -5,6 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer">
         <div className="footer__content">
+          <div className="footer__mobile"><img src="/assets/footer/footer.gif" alt="" /></div>
           <div className="footer__title">유의사항</div>
           <ul className="footer__list">
             <li>본 이벤트는 스마일게이트 희망스튜디오에서 진행되는 이벤트입니다.</li>

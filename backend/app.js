@@ -6,39 +6,47 @@ const path = require('path');
 
 const apiRoutes = require('./routes/api');         // API 엔드포인트
 const adminRoutes = require('./routes/admin');     // 관리자 기능 API
+const requireAdmin = require('./middlewares/auth');
 
 const app = express();
 
+// ✅ 1. 정적 파일 서빙 (index.html은 예외 처리)
+app.use((req, res, next) => {
+  const skipIndex = ['/', '/index.html'];
+  if (skipIndex.includes(req.path)) return next();
+  express.static(path.join(__dirname, 'public'))(req, res, next);
+});
 
-//  CORS 설정 - 프론트 주소 허용
+// ✅ 2. CORS
 app.use(cors({
-  origin: 'https://heemangpass.co.kr', // 프론트 배포 주소
+  origin: 'https://heemangpass.co.kr',
   credentials: true
 }));
 
-//  기본 미들웨어
+// ✅ 3. 기본 미들웨어
 app.use(express.json());
 app.use(cookieParser());
 
-//  React 앱 정적 파일 서빙
-app.use(express.static(path.join(__dirname, 'public')));
+// ✅ 4. API 라우팅
+app.use('/api', apiRoutes);
+app.use('/admin', adminRoutes);
 
-//  API 라우팅
-app.use('/api', apiRoutes);          // 일반 API
-app.use('/admin', adminRoutes);      // 인증/대시보드 관련 API
+// ✅ 5. 로그인 페이지 (인증 없이 접근 가능)
+app.get('/admin/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
 
-//  관리자 SPA 라우팅 처리 (React에서 /admin/* 경로 대응)
-app.get('/admin/*', (req, res) => {
+// ✅ 6. 관리자 SPA 라우팅 (인증 필요)
+app.get('/admin/*', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-//  나머지 SPA 라우팅 처리 (예: /, /about 등)
-app.get('*', (req, res) => {
+// ✅ 7. 메인 포함 나머지 모든 경로 인증
+app.get('*', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-
-//  서버 실행
+// ✅ 8. 서버 실행
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);

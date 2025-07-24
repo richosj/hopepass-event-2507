@@ -16,8 +16,20 @@
             font-size: 2.2rem;
             margin-bottom: 1.5rem;
         }
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+    &__mobile{
+        display: none;
+        @media (max-width: 768px) {
+            display: block;
+        }
     }
     &__list{
+        @media (max-width: 768px) {
+            display: none;
+        }
         li{
             +li{
                 margin-top: 1.5rem;
