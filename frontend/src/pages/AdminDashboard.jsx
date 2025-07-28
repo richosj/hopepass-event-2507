@@ -146,18 +146,26 @@ const AdminDashboard = () => {
                     <td>{code.assigned_to || '-'}</td>
                     <td>{code.used_at ? new Date(code.used_at).toLocaleString() : '-'}</td>
                     <td>
-                      {!code.assigned_to && (
+                      
                         <div className='input-group w-100'>
-                          <input
-                            type="text"
-                            className='form-control'
-                            value={assignName[code.id] || ''}
-                            onChange={e => setAssignName({ ...assignName, [code.id]: e.target.value })}
-                            placeholder="이름 입력"
-                          />
-                          <button className='btn btn-secondary' onClick={() => handleAssign(code.id)}>할당</button>
-                        </div>
-                      )}
+                        <input
+                          type="text"
+                          className='form-control'
+                          value={assignName[code.id] ?? code.assigned_to ?? ''}
+                          onChange={e => setAssignName({ ...assignName, [code.id]: e.target.value })}
+                          placeholder="이름 입력"
+                        />
+                        <button
+                          className='btn btn-secondary'
+                          onClick={() => handleAssign(code.id)}
+                          disabled={
+                            assignName[code.id] === undefined || assignName[code.id] === code.assigned_to
+                          }
+                        >
+                          {code.assigned_to ? '수정' : '할당'}
+                        </button>
+                      </div>
+                      
                     </td>
                   </tr>
                 ))}

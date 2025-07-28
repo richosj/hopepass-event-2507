@@ -1,9 +1,9 @@
 .roulette{
-  background: #1c1c1c url(../assets/roulette/bg.png) no-repeat center center;
+  background: #1c1c1c url(/assets/roulette/bg.png) no-repeat center center;
   height: 1968px;
   @media (max-width: 1000px) {
     height: auto;
-    background: url(../assets/roulette/bg-mobile.png) no-repeat center top / 100% auto;
+    background:#2c2c2c url(/assets/roulette/bg-mobile.png) no-repeat center top / 100% auto;
   }
   &-inner{
     width: 1180px;
@@ -31,11 +31,11 @@
       top: 800px;
       right: -40px;
       img{
-        animation: updown 3s infinite ease-in-out alternate;
+        animation: updown 2s infinite ease-in-out alternate;
       }
       @media (max-width: 1000px) {
-        top: 42.7775%;
-        right: 10.9375%;
+        top: 41.7775%;
+        right: 6.9375%;
         width: 6.71875%;
       }
     }
@@ -43,10 +43,10 @@
       top: 1366px;
       left: -40px;
       img{
-        animation: updown 3s infinite ease-in-out alternate;
+        animation: updown 2s infinite ease-in-out alternate;
       }
       @media (max-width: 1000px) {
-        top: 78.2938%;
+        top: 75.2938%;
         left: 6.25%;
         width: 12.1875%;
       }

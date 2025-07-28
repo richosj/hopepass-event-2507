@@ -292,8 +292,8 @@ const LuckGrab = () => {
                 </div>
                 <div className="mobile-box">
                   <img src="/assets/lucky/mission-mobile-05.png" alt="" />
-                  <a href="#" className='btn-go-mission' target='_blank'>미션 하러 가기</a>
-                  <a href="#" className='btn-certify-mission' target='_blank'>미션 인증하기</a>
+                  <a href="https://page.stibee.com/subscriptions/185736" className='btn-go-mission' target='_blank'>미션 하러 가기</a>
+                  <a href="https://naver.me/FfBmdVQq" className='btn-certify-mission' target='_blank'>미션 인증하기</a>
                 </div>
               </div>
               
