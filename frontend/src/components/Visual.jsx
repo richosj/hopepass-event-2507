@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Visual.scss';
 
+
+
 const Visual = () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document.querySelector('.shine')?.classList.add('active')
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <div className="visual">
       {/* <Link to="/admin/dashboard">관리자 페이지</Link> */}
@@ -17,8 +26,10 @@ const Visual = () => {
             <img className='mobile' src="/assets/visual/emoticon-mobile-2.png" alt="" />
           </div>
           <div className="visual__title">
-            <div className="pc">
+            <div className="pc shine">
               <span className="off"><img src="/assets/visual/title-off.png" alt="" /></span>
+              <span className="on"><img src="/assets/visual/title-on.png" alt="" /></span>
+              <div className="sub_title"><img src="/assets/visual/sub-title.png" alt="" /></div>
             </div>
             <div className="mobile">
               <span className="off"><img src="/assets/visual/title-mobile.png" alt="" /></span>

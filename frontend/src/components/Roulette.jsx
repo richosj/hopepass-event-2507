@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import './Roulette.scss'
 
 const Popup = ({ type = 'info', img, onClose }) => {
@@ -54,7 +54,7 @@ const Roulette = () => {
         } else {
           setPopup({
             type: 'error',
-            img: '/assets/popup/error.png',
+            img: '/assets/popup/invalid.png',
           })
         }
         return
@@ -72,7 +72,7 @@ const Roulette = () => {
     } catch (err) {
       setPopup({
         type: 'error',
-        img: '/assets/popup/error.png',
+        img: '/assets/popup/invalid.png',
       })
     } finally {
       setLoading(false)
@@ -81,18 +81,22 @@ const Roulette = () => {
   
 
   const spinToRank = (rank) => {
-    const baseDegPerSegment = 360 / 5
-    const segmentIndex = rank - 1
-    const stopDeg = 360 - (segmentIndex * baseDegPerSegment)
-    const fullRotations = 8 * 360 // 8바퀴
+    const degPerSegment = 360 / 5
+    const stopDeg = (rank - 1) * degPerSegment
+    const fullRotations = 8 * 360
+    const totalDeg = fullRotations - stopDeg
 
-    const totalDeg = fullRotations + stopDeg
+    const wheel = wheelRef.current
+    wheel.style.transition = 'none'
+    wheel.style.transform = `rotate(0deg)`
 
-    setRotDeg(prev => prev + totalDeg)
-
-    
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        wheel.style.transition = 'transform 4s ease-out'
+        wheel.style.transform = `rotate(${totalDeg}deg)`
+      })
+    })
   }
-
   const closePopup = () => setPopup(null)
 
   return (

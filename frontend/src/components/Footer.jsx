@@ -1,7 +1,89 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Footer.scss';
 
 const Footer = () => {
+
+  useEffect(() => {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init('4a825a353a1de4052c7ca964c7a71fe7');
+    }
+
+    window.Kakao.Share.createDefaultButton({
+      container: '#kakao-share-btn',
+      objectType: 'feed',
+      content: {
+        title: '딸기 치즈 케익',
+        description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
+        imageUrl: 'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+        link: {
+          mobileWebUrl: 'https://heemangpass.co.kr',
+          webUrl: 'https://heemangpass.co.kr',
+        },
+      },
+      buttons: [
+        {
+          title: '웹으로 보기',
+          link: {
+            mobileWebUrl: 'https://heemangpass.co.kr',
+            webUrl: 'https://heemangpass.co.kr',
+          },
+        },
+      ],
+    });
+  }, []);
+
+  
+  const handleShare = async () => {
+    const env = detectEnvironment();
+    const url = 'https://happybean.naver.com';
+  
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: '공유 제목',
+          text: '공유할 내용',
+          url,
+        });
+        console.log('공유 성공');
+      } catch (err) {
+        console.warn('공유 실패', err);
+      }
+    } else {
+      if (env.isWindows) {
+        alert('이 브라우저는 공유 기능을 지원하지 않아. Chrome 최신버전이나 모바일 기기에서 시도해봐.');
+      } else if (env.isMac && env.isSafari) {
+        alert('Safari는 공유 기능을 지원하지만 현재 사용 중인 Safari 버전이 안 맞을 수 있어.');
+      } else if (env.isMac) {
+        alert('macOS에서는 Safari에서만 공유 기능이 제대로 작동해.');
+      } else {
+        alert('이 환경에서는 공유 기능을 지원하지 않아.');
+      }
+  
+      try {
+        await navigator.clipboard.writeText(url);
+        alert(`공유할 링크가 복사됐어:\n${url}`);
+      } catch {
+        alert(`복사도 실패했어. 수동으로 복사해:\n${url}`);
+      }
+    }
+  };
+  
+  const detectEnvironment = () => {
+    const ua = navigator.userAgent.toLowerCase();
+    return {
+      isWindows: navigator.platform.startsWith('Win'),
+      isMac: navigator.platform.startsWith('Mac'),
+      isAndroid: ua.includes('android'),
+      isIOS: /iphone|ipad|ipod/.test(ua),
+      isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
+      isChrome: ua.includes('chrome') && !ua.includes('edg'),
+      isEdge: ua.includes('edg'),
+      isFirefox: ua.includes('firefox'),
+    };
+  };
+  
+
+    
   return (
     <footer className="footer">
         <div className="footer__content">
@@ -32,6 +114,36 @@ const Footer = () => {
               폐기시점 : 경품발송 목적 달성 후 폐기(25.12.25 이내))</li>
             <li>이벤트 관련 문의는 ㈜마케팅웨이브 jhko@mwave.co.kr로 문의 바라며, 문의 확인 시간은 평일 10시~17시 입니다.</li>
           </ul>
+        </div>
+        <div className="footer__share">
+          <a
+          href="https://twitter.com/intent/tweet?url=https://heemangpass.co.kr&text=공유할 텍스트"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer__share-btn"
+          >
+          트위터 공유
+        </a>
+
+        <a
+          href="https://www.facebook.com/sharer/sharer.php?u=https://heemangpass.co.kr"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer__share-btn"
+        >
+          페이스북 공유
+        </a>
+
+        <button onClick={handleShare}>
+          공유
+        </button>
+
+        <button id="kakao-share-btn">
+          카카오톡 공유
+        </button>
+
+        
+
         </div>
     </footer>
   );

@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 // ✅ 2. CORS
 app.use(cors({
-  origin: 'https://heemangpass.co.kr',
+  origin: ['http://localhost:5174', 'https://heemangpass.co.kr'],
   credentials: true
 }));
 

@@ -28,7 +28,7 @@ router.post('/spin', async (req, res) => {
     // 코드 아예 없을 시
     if (!row) {
       await client.query('ROLLBACK')
-      return res.json({ success: false, reason: 'invalid' }) 
+      return res.json({ success: false, reason: 'invalid' })
     }
 
     // 이미 사용 완료
