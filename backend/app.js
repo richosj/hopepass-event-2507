@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 // ✅ 2. CORS
 app.use(cors({
-  origin: ['http://localhost:5174', 'https://heemangpass.co.kr'],
+  origin: ['http://localhost:5173', 'https://heemangpass.co.kr'],
   credentials: true
 }));
 
@@ -42,7 +42,12 @@ app.get('/admin/*', requireAdmin, (req, res) => {
 });
 
 // ✅ 7. 메인 포함 나머지 모든 경로 인증
-app.get('*', requireAdmin, (req, res) => {
+// app.get('*', requireAdmin, (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
+
+// ✅ 메인은 인증 없이 누구나 접근 가능
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 

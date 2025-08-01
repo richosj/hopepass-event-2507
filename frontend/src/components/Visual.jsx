@@ -26,10 +26,11 @@ const Visual = () => {
             <img className='mobile' src="/assets/visual/emoticon-mobile-2.png" alt="" />
           </div>
           <div className="visual__title">
+            <div className="visual__text pc"><img src="/assets/visual/text.png" alt="" /></div>
             <div className="pc shine">
               <span className="off"><img src="/assets/visual/title-off.png" alt="" /></span>
               <span className="on"><img src="/assets/visual/title-on.png" alt="" /></span>
-              <div className="sub_title"><img src="/assets/visual/sub-title.png" alt="" /></div>
+              <div className="sub_title"><img src="/assets/visual/grab.png" alt="" /></div>
             </div>
             <div className="mobile">
               <span className="off"><img src="/assets/visual/title-mobile.png" alt="" /></span>
@@ -41,7 +42,7 @@ const Visual = () => {
               <dd>2025.08.04 ~ 2025.08.31</dd>
             </dl>
             <dl>
-              <dt>희망패스 룰렛 이벤트 기간</dt>
+              <dt>희망패스 룰렛 참여 기간</dt>
               <dd>2025.09.01 ~ 2025.09.30</dd>
             </dl>
           </div>

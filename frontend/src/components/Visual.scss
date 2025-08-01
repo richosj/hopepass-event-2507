@@ -79,7 +79,7 @@
         height: 100%;
         display: flex;
         justify-content: center;
-        align-items: center;
+        //align-items: center;
         //background: url('/assets/visual/bg-deco.png') no-repeat center top;
         position: relative;
         &::before {
@@ -98,6 +98,10 @@
             height: auto;
         }
     }
+    &__text{
+        text-align: center;
+        padding-bottom: 5rem;
+    }
     &__title{
         .mobile{
             position: absolute;
@@ -112,9 +116,9 @@
         margin: 0 auto;
         height: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-direction: column;
+        padding-top: 8rem;
         @media (max-width: 1000px) {
             padding-top: 151.25%;
             position: relative;
@@ -134,7 +138,7 @@
             }
             @media (max-width: 1000px) {
                 width: 16.40625%;
-                top: 6.330578%;
+                top: 2.330578%;
                 right: 8.75%;
                 img{
                     
@@ -157,7 +161,7 @@
         flex-direction: column;
         gap: 3.6rem 0;
         text-align: center;
-        padding-top: 8.8rem;
+        padding-top: 8rem;
         dl{
             dt{
                 color: #54fb3b;

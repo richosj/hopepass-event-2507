@@ -1,89 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './Footer.scss';
 
 const Footer = () => {
-
-  useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init('476cb5899651b46c8bcd17c9a7af4fc0');
-    }
-
-    window.Kakao.Share.createDefaultButton({
-      container: '#kakao-share-btn',
-      objectType: 'feed',
-      content: {
-        title: '희망패스 희망On드로우 이벤트',
-        description: '희망패스 꽝 없는 룰렛 참여하기 이벤트에 오신것을 환영합니다.',
-        imageUrl: 'https://heemangpass.co.kr/hopepass.jpg',
-        link: {
-          mobileWebUrl: 'https://heemangpass.co.kr',
-          webUrl: 'https://heemangpass.co.kr',
-        },
-      },
-      buttons: [
-        {
-          title: '웹으로 보기',
-          link: {
-            mobileWebUrl: 'https://heemangpass.co.kr',
-            webUrl: 'https://heemangpass.co.kr',
-          },
-        },
-      ],
-    });
-  }, []);
-
-  
-  const handleShare = async () => {
-    const env = detectEnvironment();
-    const url = 'https://heemangpass.co.kr';
-  
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: '희망패스 희망On드로우 이벤트',
-          text: '희망패스 꽝 없는 룰렛 참여하기 이벤트에 오신것을 환영합니다.',
-          url,
-        });
-        console.log('공유 성공');
-      } catch (err) {
-        console.warn('공유 실패', err);
-      }
-    } else {
-      if (env.isWindows) {
-        alert('Chrome 최신 버전 또는 모바일 기기에서 공유 기능을 이용해 주세요.');
-      } else if (env.isMac && env.isSafari) {
-        alert('Safari는 공유 기능을 지원하지만, 현재 사용 중인 버전에서는 제한이 있을 수 있습니다.');
-      } else if (env.isMac) {
-        alert('macOS에서는 Safari 브라우저에서만 공유 기능이 정상적으로 작동합니다.');
-      } else {
-        alert('현재 환경에서는 공유 기능이 지원되지 않습니다.');
-      }
-      
-      try {
-        await navigator.clipboard.writeText(url);
-        alert(`공유할 링크가 복사되었습니다:\n${url}`);
-      } catch {
-        alert(`링크 복사에 실패했습니다. 아래 링크를 수동으로 복사해 주세요:\n${url}`);
-      }
-    }
-  };
-  
-  const detectEnvironment = () => {
-    const ua = navigator.userAgent.toLowerCase();
-    return {
-      isWindows: navigator.platform.startsWith('Win'),
-      isMac: navigator.platform.startsWith('Mac'),
-      isAndroid: ua.includes('android'),
-      isIOS: /iphone|ipad|ipod/.test(ua),
-      isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
-      isChrome: ua.includes('chrome') && !ua.includes('edg'),
-      isEdge: ua.includes('edg'),
-      isFirefox: ua.includes('firefox'),
-    };
-  };
-  
-
-    
   return (
     <footer className="footer">
         <div className="footer__content">
@@ -114,36 +32,6 @@ const Footer = () => {
               폐기시점 : 경품발송 목적 달성 후 폐기(25.12.25 이내))</li>
             <li>이벤트 관련 문의는 ㈜마케팅웨이브 jhko@mwave.co.kr로 문의 바라며, 문의 확인 시간은 평일 10시~17시 입니다.</li>
           </ul>
-        </div>
-        <div className="footer__share">
-          <a
-          href="https://twitter.com/intent/tweet?url=https://heemangpass.co.kr&text=희망패스 꽝 없는 룰렛 참여하기 이벤트에 오신것을 환영합니다."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer__share-btn"
-          >
-          트위터 공유
-        </a>
-
-        <a
-          href="https://www.facebook.com/sharer/sharer.php?u=https://heemangpass.co.kr"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer__share-btn"
-        >
-          페이스북 공유
-        </a>
-
-        <button onClick={handleShare}>
-          공유
-        </button>
-
-        <button id="kakao-share-btn">
-          카카오톡 공유
-        </button>
-
-        
-
         </div>
     </footer>
   );

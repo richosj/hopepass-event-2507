@@ -1,6 +1,6 @@
 .roulette{
   background: #1c1c1c url(/assets/roulette/bg.png) no-repeat center center;
-  height: 1968px;
+  height: 2296px;
   @media (max-width: 1000px) {
     height: auto;
     background:#2c2c2c url(/assets/roulette/bg-mobile.png) no-repeat center top / 100% auto;
@@ -62,7 +62,7 @@
     text-align: center;
     padding-top: 14.5rem;
     @media (max-width: 1000px) {
-      padding-top: 0;      
+      padding-top: 0;
     }
   }
   &-input{
@@ -72,7 +72,6 @@
     border: 3px solid var(--color-primary);
     padding: 2rem;
     margin: 0 auto;
-    margin-top: 6rem;
     @media (max-width: 1000px) {      width: 100%;
       height: auto;
       margin-top: 0;
@@ -186,6 +185,42 @@
       height: 23%;
       font-size: 0;
       display: block;
+    }
+  }
+}
+
+.roulette-info{
+  text-align: center;
+  font-size: 3.4rem;
+  font-family: var(--font-weight-600);
+  color: #fff;
+  padding: 5rem 0 4.5rem;
+}
+
+.footer__share{
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:0 3rem;
+  padding-top: 15rem;
+  padding-bottom: 2.1rem;
+  @media (max-width: 768px) {
+    gap: 6.5625%;
+    padding: 0;
+    padding-bottom: 18%;
+  }
+  a,
+  button{
+    display: block;
+    font-size: 0;
+    border: 0;
+    background: none;
+    width: 14.0625%;
+    max-width: 8rem;
+    padding: 0;
+    img{
+      max-width: 100%;
     }
   }
 }
