@@ -80,7 +80,7 @@ const LuckGrab = () => {
           <div className="luck__info">
             <div className="luck__info-text">
             응모권 등록을 위한 난수번호는 희망패스 미션 기간 종료 후<br />
-            룰렛 이벤트 시작일에 희망스튜디오 <b>가입 이메일</b>을 통해 <b>순차적으로 발송</b>됩니다.
+            룰렛 이벤트 참여 기간(9월 1일)부터 희망스튜디오 <b>가입 이메일</b>을 통해 <b><br />순차적으로 발송</b>됩니다.
             </div>
           </div>
 
@@ -93,7 +93,7 @@ const LuckGrab = () => {
                 </span>
               </div>
               <div className='mobile'>
-                <img src="/assets/lucky/mobile-mission-title.png" alt="" />
+                <img src="/assets/lucky/mobile-mission-title-new.png" alt="" />
               </div>
             </div>
 

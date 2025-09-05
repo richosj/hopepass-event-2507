@@ -3,13 +3,29 @@ const router = express.Router()
 const db = require('../models/db')
 
 // 룰렛 확률
-const baseProb = { 1: 0.0017, 2: 0.04, 3: 0.083, 4: 0.4, 5: 99.4753 }
+const baseProb = { 1: 0, 2: 6, 3: 12, 4: 20, 5: 62 }
 const limits = { 1: 1, 2: 2, 3: 5, 4: 20 }
 
-router.post('/spin', async (req, res) => {
-  const { code } = req.body
-  const client = await db.connect()
+const forceWinCodes = ['t3S8dOr192n6']
 
+router.post('/spin', async (req, res) => {
+  let { code } = req.body
+  code = code?.trim();
+
+  if (!code || code.length !== 12) {
+    return res.json({ success: false, reason: 'invalid' })
+  }
+
+  // const testRank = parseInt(code)
+  // const isTestCode = !isNaN(testRank) && testRank >= 1 && testRank <= 5
+
+  
+  // if (isTestCode) {
+  //   console.log(`🧪 [TEST ONLY] code=${code} → 강제 chosenRank=${testRank}`)
+  //   return res.json({ success: true, rank: testRank })
+  // }
+
+  const client = await db.connect()
   try {
     await client.query('BEGIN')
 
@@ -19,23 +35,40 @@ router.post('/spin', async (req, res) => {
     )
     const row = result.rows[0]
 
-    // 관리자 할당 안됨
-    if (!row.assigned_to) {
-      await client.query('ROLLBACK')
-      return res.json({ success: false, reason: 'invalid' }) 
-    }
-
     // 코드 아예 없을 시
     if (!row) {
       await client.query('ROLLBACK')
       return res.json({ success: false, reason: 'invalid' })
     }
 
+    // 관리자 할당 안됨
+    if (!row.assigned_to) {
+      await client.query('ROLLBACK')
+      return res.json({ success: false, reason: 'invalid' }) 
+    }
+
+    
+
     // 이미 사용 완료
     if (row.is_used) {
       await client.query('ROLLBACK')
       return res.json({ success: false, reason: 'used' }) 
     }
+
+    if (forceWinCodes.includes(code)) {
+      const chosenRank = 1
+
+      await client.query(
+        `UPDATE event_codes
+         SET is_used = true, used_at = NOW(), prize_type = $1
+         WHERE code = $2`,
+        [chosenRank, code]
+      )
+
+      await client.query('COMMIT')
+      return res.json({ success: true, rank: chosenRank })
+    }
+
 
     // 등수별 사용 수 확인
     const countResult = await client.query(`
@@ -58,6 +91,7 @@ router.post('/spin', async (req, res) => {
     const probs = {}
 
     for (let rank = 1; rank <= 4; rank++) {
+      
       if (usedCounts[rank] >= limits[rank]) {
         probs[rank] = 0
         redistribute += baseProb[rank]

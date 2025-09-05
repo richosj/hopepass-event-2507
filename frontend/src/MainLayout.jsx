@@ -8,6 +8,8 @@ import LuckGrab from './components/LuckGrab';
 import PrizeList from './components/PrizeList';
 import Roulette from './components/Roulette';
 import Visual from './components/Visual';
+import NotFound from './pages/NotFound';
+
 
 const MainLayout = () => {
   useEffect(() => {
@@ -58,6 +60,7 @@ const MainLayout = () => {
           <Footer />
         </div>
       } />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

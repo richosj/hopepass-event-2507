@@ -8,6 +8,7 @@ const Popup = ({ type = 'info', img, onClose }) => {
       window.open('https://naver.me/xoQtcIHD', '_blank')
     }
     onClose()
+    window.location.reload()
   }
 
   return (
@@ -49,7 +50,7 @@ const Roulette = () => {
         } else if (data.reason === 'used') {
           setPopup({
             type: 'error',
-            img: '/assets/popup/invalid.png',
+            img: '/assets/popup/used.png',
           })
         } else {
           setPopup({
@@ -81,22 +82,31 @@ const Roulette = () => {
   
 
   const spinToRank = (rank) => {
+    const sectorIndexMap = {
+      1: 0,   // 0도
+      3: 1,   // 72도
+      4: 2,   // 144도
+      2: 3,   // 216도
+      5: 4    // 288도
+    }
+  
     const degPerSegment = 360 / 5
-    const stopDeg = (rank - 1) * degPerSegment
     const fullRotations = 8 * 360
+    const stopDeg = sectorIndexMap[rank] * degPerSegment
     const totalDeg = fullRotations - stopDeg
-
+  
     const wheel = wheelRef.current
+    // 기존 회전값 초기화 (transition 없이 0으로 강제 세팅)
     wheel.style.transition = 'none'
-    wheel.style.transform = `rotate(0deg)`
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        wheel.style.transition = 'transform 4s ease-out'
-        wheel.style.transform = `rotate(${totalDeg}deg)`
-      })
-    })
+    wheel.style.transform = 'rotate(0deg)'
+  
+    // 브라우저에게 "0deg로 된 상태"를 렌더링할 시간 줌
+    setTimeout(() => {
+      wheel.style.transition = 'transform 4s ease-out'
+      wheel.style.transform = `rotate(${totalDeg}deg)`
+    }, 20) // 너무 작으면 안 먹힐 수도 있어서 20ms 정도 줌
   }
+  
   const closePopup = () => setPopup(null)
 
 

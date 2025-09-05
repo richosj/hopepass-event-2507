@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   const [page, setPage] = useState(1)
   const [limit] = useState(10)
   const [total, setTotal] = useState(0)
-  const [filters, setFilters] = useState({ code: '', used: '', rank: '' })
+  const [filters, setFilters] = useState({ code: '', used: '', rank: '', assigned_to: '' })
   const [stats, setStats] = useState({ ranks: {}, used: 0, unused: 0 })
   const [assignName, setAssignName] = useState({})
 
@@ -108,6 +108,13 @@ const AdminDashboard = () => {
                     onChange={handleChange}
                     placeholder="코드 검색"
                   />
+                   <input
+                      className="form-control"
+                      name="assigned_to"
+                      value={filters.assigned_to}
+                      onChange={handleChange}
+                      placeholder="사용자 이름 검색"
+                    />
                 </div>
                 
               </div>
@@ -148,6 +155,23 @@ const AdminDashboard = () => {
                     <td>
                       
                         <div className='input-group w-100'>
+                          {/* 🔄 초기화 버튼 */}
+                          <button
+                            className='btn btn-outline-danger btn-sm'
+                            type="button"
+                            onClick={async () => {
+                              if (!window.confirm('이 코드를 초기화하시겠습니까?')) return;
+                              try {
+                                await axios.post('/admin/reset', { id: code.id }, { withCredentials: true })
+                                fetchCodes()
+                              } catch (err) {
+                                console.error('초기화 실패:', err)
+                                alert('초기화 실패')
+                              }
+                            }}
+                          >
+                            초기화
+                          </button>
                         <input
                           type="text"
                           className='form-control'

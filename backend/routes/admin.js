@@ -22,7 +22,7 @@ router.post('/login', express.urlencoded({ extended: true }), (req, res) => {
   const expected = process.env.ADMIN_ID?.trim();
   const isDev = req.hostname === 'localhost' || process.env.NODE_ENV === 'development';
 
-  // ✅ 이미 로그인 상태면 리다이렉트만 응답
+  // 이미 로그인 상태면 리다이렉트만 응답
   if (admin && expected && admin === expected) {
     return res.json({
       success: true,
@@ -65,7 +65,7 @@ router.post('/logout', (req, res) => {
 
 // 관리자 코드 목록 API (React에서 호출)
 router.get('/codes', auth, async (req, res) => {
-  const { code, used, rank, page = 1, limit = 15 } = req.query;
+  const { code, used, rank, assigned_to, page = 1, limit = 15 } = req.query;
   const offset = (page - 1) * limit;
 
   const conditions = [];
@@ -84,6 +84,11 @@ router.get('/codes', auth, async (req, res) => {
   if (rank) {
     conditions.push(`prize_type = $${i++}`);
     params.push(rank);
+  }
+
+  if (assigned_to) {
+    conditions.push(`assigned_to ILIKE $${i++}`);
+    params.push(`%${assigned_to}%`);
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -133,6 +138,23 @@ router.post('/assign', auth, async (req, res) => {
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: 'DB 업데이트 실패' })
+  }
+})
+// 코드 초기화
+router.post('/reset', auth, async (req, res) => {
+  const { id } = req.body
+  if (!id) return res.status(400).json({ error: 'ID가 필요합니다.' })
+  try {
+    await db.query(
+      `UPDATE event_codes 
+       SET prize_type = NULL, is_used = false, used_at = NULL 
+       WHERE id = $1`,
+      [id]
+    )
+    res.json({ success: true })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'DB 초기화 실패' })
   }
 })
 
