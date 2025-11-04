@@ -1,0 +1,32 @@
+@import './styles/reset.css';
+
+/* 글로벌 기본 스타일 */
+:root {
+  --font-weight-100: "Freesentation 1";
+  --font-weight-200: "Freesentation 2";
+  --font-weight-300: "Freesentation 3";
+  --font-weight-400: "Freesentation 4";
+  --font-weight-500: "Freesentation 5";
+  --font-weight-600: "Freesentation 6";
+  --font-weight-700: "Freesentation 7";
+  --font-weight-800: "Freesentation 8";
+  --font-weight-900: "Freesentation 9";
+
+  --max-width: 120rem;
+  --gap: 0rem;
+
+  --color-primary: #ffd13e;
+}
+html,
+body{
+  width: 100%;
+  height: 100%;
+}
+html{font-size: 10px;}
+
+body {
+  font-family: var(--font-weight-400);
+  color: #333;
+  line-height: 1;
+  letter-spacing: -0.043em;
+}

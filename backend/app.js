@@ -46,6 +46,20 @@ app.get('/admin/*', requireAdmin, (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 // });
 
+//  7. 메인 이벤트 페이지 분기 처리
+app.get('*', (req, res) => {
+  const season = req.query.season;
+
+  if (season === '1') {
+    // ✅ 시즌1 페이지
+    res.sendFile(path.join(__dirname, 'public', 'season1', 'index.html'));
+  } else {
+    // ✅ 기본(시즌2) 페이지
+    res.sendFile(path.join(__dirname, 'public', 'season2', 'index.html'));
+  }
+});
+
+
 //  메인은 인증 없이 누구나 접근 가능
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

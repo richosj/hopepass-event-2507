@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "dev:season1": "vite --config vite.config.season1.js",
+    "dev:season2": "vite --config vite.config.season2.js",
+    "build:season1": "vite build --config vite.config.season1.js",
+    "build:season2": "vite build --config vite.config.season2.js",
+    "build:all": "npm run build:season1 && npm run build:season2",
     "lint": "eslint .",
     "preview": "vite preview"
   },
