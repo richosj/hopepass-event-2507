@@ -1,22 +1,33 @@
 import react from '@vitejs/plugin-react'
+import fs from 'fs'
 import path from 'path'
 import { defineConfig } from 'vite'
 
-// 💡 모든 HTML 내부 경로에서 /assets → /season1/assets 로 자동 치환
-function fixHtmlAssetPaths(season) {
+function fixAllAssetPaths(season) {
   return {
-    name: 'fix-html-asset-paths',
+    name: 'fix-all-asset-paths',
     enforce: 'post',
-    generateBundle(_, bundle) {
-      for (const [fileName, file] of Object.entries(bundle)) {
-        if (file.type === 'asset' && file.fileName.endsWith('.html')) {
-          // <img src="/assets/...">, <link href="/assets/...">, <script src="/assets/...">
-          file.source = file.source.replace(
-            /(<(?:img|script|link)[^>]+(?:src|href)=["'])(\/assets\/)/g,
-            `$1/${season}$2`
-          )
+    closeBundle() {
+      const outDir = path.resolve(__dirname, `../backend/public/${season}`)
+
+      const fixPaths = dir => {
+        const files = fs.readdirSync(dir)
+        for (const file of files) {
+          const filePath = path.join(dir, file)
+          const stat = fs.statSync(filePath)
+          if (stat.isDirectory()) {
+            fixPaths(filePath)
+          } else if (/\.(html|js|css|map)$/i.test(file)) {
+            let content = fs.readFileSync(filePath, 'utf-8')
+            // '/assets/' → '/season1/assets/'
+            content = content.replace(/(["'(]|`)\s*\/assets\//g, `$1${season}/assets/`);
+            fs.writeFileSync(filePath, content)
+          }
         }
       }
+
+      fixPaths(outDir)
+      console.log(`✅ 모든 /assets 경로가 '/${season}/assets/'로 수정되었습니다.`)
     },
   }
 }
@@ -27,10 +38,10 @@ export default defineConfig(({ command }) => {
 
   return {
     root: path.resolve(__dirname, season),
-    base: isBuild ? `/${season}/` : '/', // ✅ dev에선 '/', build에선 '/season1/'
+    base: isBuild ? `/${season}/` : '/',
     plugins: [
       react(),
-      isBuild && fixHtmlAssetPaths(season), // ✅ 빌드 시 자동 치환
+      isBuild && fixAllAssetPaths(season), // ✅ 빌드 후 실제 파일 경로 전체 수정
     ],
     publicDir: path.resolve(__dirname, `${season}/public`),
     build: {
@@ -43,10 +54,7 @@ export default defineConfig(({ command }) => {
       proxy: {
         '/admin': 'http://localhost:3000',
       },
-      historyApiFallback: {
-        rewrites: [{ from: /^\/$/, to: '/index.html' }],
-        disableDotRule: true,
-      },
+      historyApiFallback: true,
     },
   }
 })
