@@ -5,7 +5,7 @@ import './Roulette.scss'
 const Popup = ({ type = 'info', img, onClose }) => {
   const handleClick = () => {
     if (type === 'success') {
-      window.open('https://naver.me/xoQtcIHD', '_blank')
+      window.open('https://naver.me/58jQFJjm', '_blank')
     }
     onClose()
     window.location.reload()
