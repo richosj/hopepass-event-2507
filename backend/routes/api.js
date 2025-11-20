@@ -3,7 +3,7 @@ const router = express.Router()
 const db = require('../models/db')
 
 // 룰렛 확률
-const baseProb = { 1: 0, 2: 0.4, 3: 1, 4: 5, 5: 94.4 }
+const baseProb = { 1: 0, 2: 2.5, 3: 4, 4: 8, 5: 85.5 }
 const limits = { 1: 1, 2: 2, 3: 5, 4: 20 }
 
 const forceWinCodes = ['t3S8dOr192n6']
